@@ -1,0 +1,72 @@
+:root {
+  --default: 0, 0%;
+  --red: 351, 100%;
+  --light: hsl(var(--default), 100%);
+  --dark: hsl(var(--default), 0%);
+
+  --gray: hsl(var(--default), 9%);
+  --gray-bg: hsl(var(--default), 15%);
+  --light-gray: hsl(var(--default) 17%);
+
+  --red-primary: hsl(var(--red), 70%);
+  --red-hover: hsl(var(--red), 65%);
+}
+
+:root {
+  --color-background: var(--gray-bg);
+
+  --color-header: var(--gray);
+
+  --color-heading: var(--light);
+  --color-text: var(--light);
+
+  --color-link: var(--light);
+  --color-link-active: var(--red-primary);
+  --color-link-hover: var(--red-primary);
+
+  --color-button: var(--red-primary);
+  --color-button-hover: var(--red-hover);
+
+  --section-gap: 1.875rem;
+  --container-width: 1028px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  position: relative;
+  font-weight: normal;
+}
+
+body {
+  min-height: 100vh;
+  color: var(--color-text);
+  background: var(--color-background);
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+}
+
+.container {
+  max-width: var(--container-width);
+  margin: 0 auto;
+}
+
+@media (max-width: 1028px) {
+  .container {
+    margin: 0 1em;
+  }
+}
+
+a {
+  outline-style: none !important;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+  color: var(--color-heading);
+}
