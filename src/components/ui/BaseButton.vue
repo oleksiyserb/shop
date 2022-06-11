@@ -9,8 +9,8 @@
 
 <script setup lang="ts">
 interface Props {
-  to: object | string;
-  link: boolean;
+  to?: object | string;
+  link?: boolean;
 }
 
 defineProps<Props>();

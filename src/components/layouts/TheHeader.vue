@@ -1,35 +1,42 @@
 <template>
-  <header>
-    <div class="container">
-      <nav>
-        <h1>SerbShop</h1>
-        <ul>
-          <li>
-            <router-link class="link" :to="{ name: 'main' }"
-              >All Products</router-link
-            >
-          </li>
-          <li>
-            <router-link class="link" :to="{ name: 'cabinet' }"
-              >Cabinet</router-link
-            >
-          </li>
-          <li>
-            <base-button :to="{ name: 'register' }" link>Sign Up</base-button>
-          </li>
-        </ul>
-      </nav>
-    </div>
-  </header>
+  <div class="pre--header">
+    <header>
+      <div class="container">
+        <nav>
+          <h1>DogShop</h1>
+          <ul>
+            <li>
+              <router-link class="link" :to="{ name: 'main' }"
+                >All Products</router-link
+              >
+            </li>
+            <li>
+              <router-link class="link" :to="{ name: 'cabinet' }"
+                >Cabinet</router-link
+              >
+            </li>
+            <li>
+              <base-button :to="{ name: 'register' }" link>Sign Up</base-button>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+  </div>
 </template>
 
 <style scoped>
 header {
-  background-color: var(--color-header);
+  background-color: var(--color-layout);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 3;
 }
 
 nav {
-  padding: 1em 0;
+  padding: 1.25em 0;
   box-shadow: black;
   display: flex;
   justify-content: space-between;
@@ -67,5 +74,9 @@ li {
   text-decoration: underline;
   text-underline-offset: 2px;
   color: var(--color-link-active);
+}
+
+.pre--header {
+  height: 4.375em;
 }
 </style>

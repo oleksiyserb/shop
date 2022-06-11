@@ -15,10 +15,12 @@
 :root {
   --color-background: var(--gray-bg);
 
-  --color-header: var(--gray);
+  --color-layout: var(--gray);
 
   --color-heading: var(--light);
+
   --color-text: var(--light);
+  --color-text-secondary: var(--gray-bg);
 
   --color-link: var(--light);
   --color-link-active: var(--red-primary);
@@ -26,6 +28,10 @@
 
   --color-button: var(--red-primary);
   --color-button-hover: var(--red-hover);
+
+  --color-border: var(--gray-bg);
+
+  --color-card: var(--light);
 
   --section-gap: 1.875rem;
   --container-width: 1028px;
@@ -69,4 +75,18 @@ h3,
 h4,
 h5 {
   color: var(--color-heading);
+}
+
+strong {
+  font-weight: bold;
+}
+
+main {
+  margin: var(--section-gap) 0;
+}
+
+#app {
+  display: grid;
+  min-height: 100vh;
+  grid-template-rows: auto 1fr auto;
 }
