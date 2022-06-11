@@ -3,7 +3,9 @@
     <header>
       <div class="container">
         <nav>
-          <h1>DogShop</h1>
+          <router-link class="header__title" :to="{ name: 'main' }">
+            <h1><span>Dog</span>Shop</h1>
+          </router-link>
           <ul>
             <li>
               <router-link class="link" :to="{ name: 'main' }"
@@ -37,7 +39,6 @@ header {
 
 nav {
   padding: 1.25em 0;
-  box-shadow: black;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -78,5 +79,17 @@ li {
 
 .pre--header {
   height: 4.375em;
+}
+
+.header__title {
+  text-decoration: none;
+}
+
+.header__title > h1 > span {
+  transition: color 0.3s;
+}
+
+.header__title:hover > h1 > span {
+  color: var(--color-link-active);
 }
 </style>

@@ -3,7 +3,7 @@
     <div class="container">
       <div class="footer__details">
         <h2>Footer</h2>
-        <p>Copyright 2022</p>
+        <p>Copyright 2022 &copy;</p>
       </div>
     </div>
   </footer>

@@ -40,4 +40,13 @@ const router = createRouter({
   ],
 });
 
+router.beforeEach((to, from: object, next: () => void): void => {
+  const title: HTMLTitleElement | null = document.querySelector("title");
+
+  if (title) {
+    title.innerHTML = to.meta.title as string;
+    next();
+  }
+});
+
 export default router;
