@@ -9,7 +9,7 @@
           <ul>
             <li>
               <router-link class="link" :to="{ name: 'main' }"
-                >All Products</router-link
+                >Our Products</router-link
               >
             </li>
             <li>
@@ -20,12 +20,19 @@
             <li>
               <base-button :to="{ name: 'register' }" link>Sign Up</base-button>
             </li>
+            <li>
+              <base-button>Cart <shoping-cart /></base-button>
+            </li>
           </ul>
         </nav>
       </div>
     </header>
   </div>
 </template>
+
+<script setup lang="ts">
+import ShopingCart from "../icons/ShopingCart.vue";
+</script>
 
 <style scoped>
 header {
@@ -55,7 +62,7 @@ ul {
 }
 
 li {
-  margin: 0 1em;
+  margin: 0 0.5em;
 }
 
 .link {
@@ -91,5 +98,13 @@ li {
 
 .header__title:hover > h1 > span {
   color: var(--color-link-active);
+}
+
+button {
+  display: flex;
+}
+
+button > * {
+  margin-left: 0.5em;
 }
 </style>

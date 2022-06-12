@@ -8,7 +8,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
     name: "main",
-    meta: { title: "All Products" },
+    meta: { title: "Our Products" },
     component: () => import("../views/product/ProductFeed.vue"),
   },
   {

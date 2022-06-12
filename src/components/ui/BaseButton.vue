@@ -24,6 +24,7 @@ defineProps<Props>();
   color: var(--color-text);
   background-color: var(--color-button);
   transition: background-color 0.3s;
+  font-size: 1.125rem;
   border: none;
 }
 
