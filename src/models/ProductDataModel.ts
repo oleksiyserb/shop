@@ -4,5 +4,6 @@ export default interface ProductData {
   rating: number;
   price: number;
   picture: string;
+  type: string;
   count: number;
 }
