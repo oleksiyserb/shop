@@ -1,24 +1,21 @@
 <template>
   <div class="product__item">
     <base-card>
-      <!-- <a href="/collar">Test</a> -->
+      <router-link class="product__link-mask" to="/collar"></router-link>
       <header>
-        <h4>Product</h4>
-        <ul class="product__rating">
-          <li v-for="i in 5" :key="i"><star-icon /></li>
-        </ul>
+        <h4>{{ title }}</h4>
       </header>
       <picture>
-        <img src="../../assets/img/collar-1.jpg" alt="collar" />
+        <img :src="picture" alt="collar" />
       </picture>
       <div class="product__info">
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua.
-        </p>
-        <!-- TODO: Якщо продукт закінчується <span>The product is running out</span> -->
+        <ul class="product__rating">
+          <li v-for="i in 5" :key="i">
+            <star-icon :selected="getRating(i, rating)" />
+          </li>
+        </ul>
         <div class="product__actions">
-          <strong>₴2 000</strong>
+          <strong>{{ formatedPrice }}</strong>
           <base-button>Add To Cart</base-button>
         </div>
       </div>
@@ -27,12 +24,55 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from "@vue/reactivity";
 import StarIcon from "../icons/StarIcon.vue";
+interface Product {
+  id: string;
+  title: string;
+  rating: number;
+  price: number;
+  picture: string;
+  count: number;
+}
+
+const props = defineProps<Product>();
+
+const formatedPrice = computed((): string => {
+  if (String(props.price).length > 3) {
+    const arrayPrice = String(props.price).split("").reverse();
+
+    for (let i = 3; arrayPrice.length > i; i += 4) {
+      arrayPrice.splice(i, 0, " ");
+    }
+
+    return `₴ ${arrayPrice.reverse().join("")}`;
+  }
+
+  return `₴ ${props.price}`;
+});
+
+const getRating = (i: number, rating: number): boolean => {
+  return rating - i >= 0;
+};
 </script>
 
 <style scoped>
 .product__item {
   grid-column: span 4;
+  position: relative;
+}
+
+.product__link-mask {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 3.75em;
+  z-index: 4;
+}
+
+.product__link-mask:hover + header > h4 {
+  color: var(--color-link-hover);
 }
 
 @media (max-width: 768px) {
@@ -55,14 +95,13 @@ import StarIcon from "../icons/StarIcon.vue";
 
 header {
   margin-bottom: 1em;
-  display: flex;
-  justify-content: space-between;
 }
 
 header > h4 {
   font-size: 1.25rem;
   font-weight: 600;
   color: var(--color-text-secondary);
+  transition: color 0.3s;
 }
 
 picture {
@@ -72,6 +111,8 @@ picture {
 picture > img {
   display: block;
   width: 100%;
+  height: 250px;
+  object-fit: cover;
 }
 
 .product__info > *:not(button) {
@@ -84,10 +125,14 @@ picture > img {
   border-radius: 12px;
 }
 
-.product__actions {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.product__actions > strong {
+  margin: 0.5em 0;
+  display: block;
+}
+
+.product__actions > button {
+  display: block;
+  width: 100%;
 }
 
 .product__actions > strong {

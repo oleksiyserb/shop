@@ -7,13 +7,12 @@
       <product-filter />
       <section class="product__main">
         <h1>All Products | Filter result:</h1>
-        <div class="product__wrapper">
-          <product-item />
-          <product-item />
-          <product-item />
-          <product-item />
-          <product-item />
-        </div>
+        <suspense>
+          <product-list />
+          <template #fallback>
+            <base-spinner />
+          </template>
+        </suspense>
       </section>
     </div>
   </div>
@@ -21,7 +20,7 @@
 
 <script setup lang="ts">
 import ProductFilter from "../../components/product/ProductFilter.vue";
-import ProductItem from "../../components/product/ProductItem.vue";
+import ProductList from "../../components/product/ProductList.vue";
 </script>
 
 <style scoped>
@@ -70,12 +69,6 @@ import ProductItem from "../../components/product/ProductItem.vue";
 
 .product__main > h1 {
   margin-bottom: 1em;
-}
-
-.product__wrapper {
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  gap: var(--section-gap);
 }
 
 h1 {

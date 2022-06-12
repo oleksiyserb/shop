@@ -1,5 +1,6 @@
 <template>
   <svg
+    v-if="selected"
     width="20"
     height="18"
     viewBox="0 0 25 23"
@@ -13,4 +14,24 @@
       stroke-width="0.5"
     />
   </svg>
+  <svg
+    v-else
+    width="20"
+    height="18"
+    viewBox="0 0 25 23"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M12.5 0.809018L15.0687 8.71454L15.1248 8.88729H15.3064H23.6188L16.8939 13.7732L16.747 13.8799L16.8031 14.0527L19.3718 21.9582L12.6469 17.0723L12.5 16.9656L12.3531 17.0723L5.62821 21.9582L8.19687 14.0527L8.253 13.8799L8.10606 13.7732L1.38121 8.88729H9.69357H9.87521L9.93134 8.71454L12.5 0.809018Z"
+      stroke="#ff4d67"
+      stroke-width="0.5"
+    />
+  </svg>
 </template>
+
+<script setup lang="ts">
+defineProps<{
+  selected: boolean;
+}>();
+</script>
