@@ -38,6 +38,8 @@
 
   --color-card: var(--light);
 
+  --color-spinner: var(--light);
+
   --section-gap: 1.875rem;
   --container-width: 1028px;
 }

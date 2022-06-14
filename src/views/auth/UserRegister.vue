@@ -35,7 +35,10 @@
               />
               <span>{{ passwordError }}</span>
             </div>
-            <base-button>Sign Up</base-button>
+            <base-button>
+              <span v-if="!isLoading">Sign Up</span>
+              <base-spinner v-else width="60px" height="30px" fill="#ffffff" />
+            </base-button>
           </form>
         </base-card>
       </div>
@@ -44,11 +47,23 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from "vue";
 import { useAuthForm } from "../../hooks/useAuthForm";
+import { useAuth } from "../../hooks/useAuth";
+import type Auth from "@/models/AuthModel";
+import { useRouter } from "vue-router";
 
+const { replace } = useRouter();
+const isLoading = ref<boolean>(false);
+
+const { signUp } = useAuth();
 const { onSubmit, getEmailField, getPassswordField } = useAuthForm(
-  (values): void => {
-    alert(values);
+  async (values: Auth): Promise<void> => {
+    isLoading.value = true;
+    await signUp(values.email, values.password);
+    isLoading.value = false;
+
+    replace({ name: "main" });
   }
 );
 

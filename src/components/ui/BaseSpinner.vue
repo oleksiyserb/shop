@@ -1,102 +1,40 @@
 <template>
-  <div class="lds-roller">
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-  </div>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    :width="width"
+    :height="height"
+    viewBox="0 0 100 100"
+    preserveAspectRatio="xMidYMid"
+  >
+    <path
+      d="M10 50A40 40 0 0 0 90 50A40 42 0 0 1 10 50"
+      :fill="fill"
+      stroke="none"
+    >
+      <animateTransform
+        attributeName="transform"
+        type="rotate"
+        dur="1s"
+        repeatCount="indefinite"
+        keyTimes="0;1"
+        values="0 50 51;360 50 51"
+      ></animateTransform>
+    </path>
+  </svg>
 </template>
 
+<script setup lang="ts">
+defineProps<{
+  width: string;
+  height: string;
+  fill: string;
+}>();
+</script>
+
 <style scoped>
-.lds-roller {
-  display: flex;
-  margin: 0 auto;
-  align-items: center;
-  position: relative;
-  width: 80px;
-  height: 80px;
-  transform: scale(1.4);
-}
-.lds-roller div {
-  animation: lds-roller 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-  transform-origin: 40px 40px;
-}
-.lds-roller div:after {
-  content: " ";
+svg {
+  margin: auto;
   display: block;
-  position: absolute;
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: #fff;
-  margin: -4px 0 0 -4px;
-}
-.lds-roller div:nth-child(1) {
-  animation-delay: -0.036s;
-}
-.lds-roller div:nth-child(1):after {
-  top: 63px;
-  left: 63px;
-}
-.lds-roller div:nth-child(2) {
-  animation-delay: -0.072s;
-}
-.lds-roller div:nth-child(2):after {
-  top: 68px;
-  left: 56px;
-}
-.lds-roller div:nth-child(3) {
-  animation-delay: -0.108s;
-}
-.lds-roller div:nth-child(3):after {
-  top: 71px;
-  left: 48px;
-}
-.lds-roller div:nth-child(4) {
-  animation-delay: -0.144s;
-}
-.lds-roller div:nth-child(4):after {
-  top: 72px;
-  left: 40px;
-}
-.lds-roller div:nth-child(5) {
-  animation-delay: -0.18s;
-}
-.lds-roller div:nth-child(5):after {
-  top: 71px;
-  left: 32px;
-}
-.lds-roller div:nth-child(6) {
-  animation-delay: -0.216s;
-}
-.lds-roller div:nth-child(6):after {
-  top: 68px;
-  left: 24px;
-}
-.lds-roller div:nth-child(7) {
-  animation-delay: -0.252s;
-}
-.lds-roller div:nth-child(7):after {
-  top: 63px;
-  left: 17px;
-}
-.lds-roller div:nth-child(8) {
-  animation-delay: -0.288s;
-}
-.lds-roller div:nth-child(8):after {
-  top: 56px;
-  left: 12px;
-}
-@keyframes lds-roller {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
+  shape-rendering: auto;
 }
 </style>

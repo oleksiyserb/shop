@@ -10,7 +10,7 @@
         <suspense>
           <product-list />
           <template #fallback>
-            <base-spinner />
+            <base-spinner width="200px" height="200px" fill="#e15b64" />
           </template>
         </suspense>
       </section>

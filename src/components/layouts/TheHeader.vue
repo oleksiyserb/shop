@@ -12,12 +12,17 @@
                 >Our Products</router-link
               >
             </li>
-            <li>
-              <router-link class="link" :to="{ name: 'cabinet' }"
-                >Cabinet</router-link
-              >
-            </li>
-            <li>
+            <template v-if="user">
+              <li>
+                <router-link class="link" :to="{ name: 'cabinet' }"
+                  >Cabinet</router-link
+                >
+              </li>
+              <li>
+                <base-button @click="logOut">Sign Out</base-button>
+              </li>
+            </template>
+            <li v-else>
               <base-button :to="{ name: 'register' }" link>Sign Up</base-button>
             </li>
             <li>
@@ -32,6 +37,9 @@
 
 <script setup lang="ts">
 import ShopingCart from "../icons/ShopingCart.vue";
+import { useAuth } from "@/hooks/useAuth";
+
+const { user, logOut } = useAuth();
 </script>
 
 <style scoped>
