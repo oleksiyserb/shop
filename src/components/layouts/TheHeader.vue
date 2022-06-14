@@ -12,7 +12,7 @@
                 >Our Products</router-link
               >
             </li>
-            <template v-if="user">
+            <template v-if="authStore.isLogin">
               <li>
                 <router-link class="link" :to="{ name: 'cabinet' }"
                   >Cabinet</router-link
@@ -38,8 +38,10 @@
 <script setup lang="ts">
 import ShopingCart from "../icons/ShopingCart.vue";
 import { useAuth } from "@/hooks/useAuth";
+import { useAuthStore } from "@/stores/auth";
 
-const { user, logOut } = useAuth();
+const authStore = useAuthStore();
+const { logOut } = useAuth();
 </script>
 
 <style scoped>
