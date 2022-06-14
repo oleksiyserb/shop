@@ -10,6 +10,7 @@
 
   --red-primary: hsl(var(--red), 70%);
   --red-hover: hsl(var(--red), 65%);
+  --red-focus: hsl(var(--red), 90%);
 }
 
 :root {
@@ -21,6 +22,7 @@
 
   --color-text: var(--light);
   --color-text-secondary: var(--gray-bg);
+  --color-text-warn: var(--red-primary);
 
   --color-link: var(--light);
   --color-link-active: var(--red-primary);
@@ -30,6 +32,9 @@
   --color-button-hover: var(--red-hover);
 
   --color-border: var(--gray-bg);
+  --color-border-focus: var(--red-primary);
+
+  --color-input-focus: 0 0 0 0.25rem var(--red-focus);
 
   --color-card: var(--light);
 
@@ -130,7 +135,18 @@ main {
 
 .auth__form-control > input {
   border: 1px solid var(--color-border);
-  border-radius: 12px;
+  border-radius: 10px;
   padding: 0.3em;
   width: 100%;
+  transition: border, box-shadow 0.3s;
+}
+
+.auth__form-control > input:focus {
+  border: 1px solid var(--color-border-focus);
+  box-shadow: var(--color-input-focus);
+}
+
+.auth__form-control > span {
+  margin-top: 0.5em;
+  color: var(--color-text-warn);
 }

@@ -10,14 +10,30 @@
               your account.</span
             >
           </header>
-          <form class="auth__form">
+          <form @submit.prevent="onSubmit" class="auth__form">
             <div class="auth__form-control">
               <label for="email">Enter your email</label>
-              <input type="email" id="email" />
+              <input
+                type="email"
+                name="email"
+                id="email"
+                :value="email"
+                @change="emailChange"
+                @blur="emailBlur"
+              />
+              <span>{{ emailError }}</span>
             </div>
             <div class="auth__form-control">
               <label for="password">Enter your password</label>
-              <input type="password" id="password" />
+              <input
+                name="password"
+                type="password"
+                id="password"
+                :value="password"
+                @change="passwordChange"
+                @blur="passwordBlur"
+              />
+              <span>{{ passwordError }}</span>
             </div>
             <base-button>Sign Up</base-button>
           </form>
@@ -26,3 +42,17 @@
     </div>
   </section>
 </template>
+
+<script setup lang="ts">
+import { useAuthForm } from "../../hooks/useAuthForm";
+
+const { onSubmit, getEmailField, getPassswordField } = useAuthForm(
+  (values): void => {
+    alert(values);
+  }
+);
+
+const { email, emailBlur, emailChange, emailError } = getEmailField();
+const { password, passwordBlur, passwordChange, passwordError } =
+  getPassswordField();
+</script>
