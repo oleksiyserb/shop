@@ -1,4 +1,7 @@
 <template>
+  <base-modal>
+    <p>{{ error }}</p>
+  </base-modal>
   <section class="auth">
     <div class="container">
       <div class="auth__wrapper">
@@ -55,12 +58,17 @@ import { useAuthStore } from "@/stores/auth";
 const authStore = useAuthStore();
 const { replace } = useRouter();
 const isLoading = ref<boolean>(false);
+const error = ref<string>("");
 
 const { onSubmit, getEmailField, getPassswordField } = useAuthForm(
   async (values: Auth): Promise<void> => {
-    isLoading.value = true;
-    await authStore.signIn(values);
-    isLoading.value = false;
+    try {
+      isLoading.value = true;
+      await authStore.signIn(values);
+      isLoading.value = false;
+    } catch (errorMessage: string) {
+      error.value = errorMessage;
+    }
 
     replace({ name: "main" });
   }

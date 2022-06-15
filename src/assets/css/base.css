@@ -17,6 +17,7 @@
   --color-background: var(--gray-bg);
 
   --color-layout: var(--gray);
+  --color-layout-secondary: var(--red-primary);
 
   --color-heading: var(--light);
 
