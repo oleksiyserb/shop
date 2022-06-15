@@ -10,13 +10,16 @@
 import TheHeader from "./components/layouts/TheHeader.vue";
 import TheFooter from "./components/layouts/TheFooter.vue";
 import { useAuth } from "./hooks/useAuth";
+import { onBeforeMount } from "vue";
 import { useAuthStore } from "./stores/auth";
 
-const { getUser } = useAuth();
+const { getCurrentUser } = useAuth();
 const authStore = useAuthStore();
 
-getUser((user) => {
-  if (user) {
+onBeforeMount(async () => {
+  const user = await getCurrentUser();
+
+  if (user !== null) {
     authStore.autoAuth(user);
   }
 });

@@ -3,17 +3,23 @@ import {
   onAuthStateChanged,
   signInWithEmailAndPassword,
   signOut,
-  type NextOrObserver,
   type UserCredential,
 } from "@firebase/auth";
 import { auth } from "@/firebase";
-import { onUnmounted } from "vue";
 import type User from "@/models/UserModel";
 
 export const useAuth = () => {
-  const getUser = (callback: NextOrObserver<User>) => {
-    const unsubscribe = onAuthStateChanged(auth, callback);
-    onUnmounted(unsubscribe);
+  const getCurrentUser = (): Promise<User | null> => {
+    return new Promise((resolve, reject) => {
+      const unsubscribe = onAuthStateChanged(
+        auth,
+        (user) => {
+          unsubscribe();
+          resolve(user);
+        },
+        reject
+      );
+    });
   };
 
   const signIn = async (
@@ -34,5 +40,5 @@ export const useAuth = () => {
     signOut(auth);
   };
 
-  return { getUser, signIn, signUp, logOut };
+  return { getCurrentUser, signIn, signUp, logOut };
 };
