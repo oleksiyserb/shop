@@ -48,18 +48,18 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import type Auth from "@/models/AuthModel";
-import { useAuth } from "../../hooks/useAuth";
 import { useAuthForm } from "../../hooks/useAuthForm";
 import { useRouter } from "vue-router";
+import { useAuthStore } from "@/stores/auth";
 
-const { signIn } = useAuth();
+const authStore = useAuthStore();
 const { replace } = useRouter();
 const isLoading = ref<boolean>(false);
 
 const { onSubmit, getEmailField, getPassswordField } = useAuthForm(
   async (values: Auth): Promise<void> => {
     isLoading.value = true;
-    await signIn(values.email, values.password);
+    await authStore.signIn(values);
     isLoading.value = false;
 
     replace({ name: "main" });

@@ -12,11 +12,14 @@ import TheFooter from "./components/layouts/TheFooter.vue";
 import { useAuth } from "./hooks/useAuth";
 import { useAuthStore } from "./stores/auth";
 
-const { user } = useAuth();
+const { getUser } = useAuth();
 const authStore = useAuthStore();
 
-console.log(await user);
-authStore.signIn(user);
+getUser((user) => {
+  if (user) {
+    authStore.autoAuth(user);
+  }
+});
 </script>
 
 <style>

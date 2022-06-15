@@ -17,9 +17,15 @@ export const useAuthStore = defineStore({
       const { signUp } = useAuth();
 
       const userCredentials = await signUp(fields.email, fields.password);
-      this.signIn(userCredentials.user);
+      this.autoAuth(userCredentials.user);
     },
-    signIn(user: User): void {
+    async signIn(user: { email: string; password: string }): Promise<void> {
+      const { signIn } = useAuth();
+
+      const userCredentials = await signIn(user.email, user.password);
+      this.autoAuth(userCredentials.user);
+    },
+    async autoAuth(user: User) {
       if (user.email !== null && user.uid !== null) {
         this.$patch({
           uid: user.uid,
@@ -27,6 +33,12 @@ export const useAuthStore = defineStore({
           isLogin: true,
         });
       }
+    },
+    async signOut() {
+      const { logOut } = useAuth();
+
+      logOut();
+      this.$reset();
     },
   },
 });

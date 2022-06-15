@@ -60,7 +60,7 @@ const authStore = useAuthStore();
 const { onSubmit, getEmailField, getPassswordField } = useAuthForm(
   async (values: Auth): Promise<void> => {
     isLoading.value = true;
-    authStore.signUp(values);
+    await authStore.signUp(values);
     isLoading.value = false;
 
     replace({ name: "main" });

@@ -19,7 +19,7 @@
                 >
               </li>
               <li>
-                <base-button @click="logOut">Sign Out</base-button>
+                <base-button @click="signOut">Sign Out</base-button>
               </li>
             </template>
             <li v-else>
@@ -37,11 +37,13 @@
 
 <script setup lang="ts">
 import ShopingCart from "../icons/ShopingCart.vue";
-import { useAuth } from "@/hooks/useAuth";
 import { useAuthStore } from "@/stores/auth";
 
 const authStore = useAuthStore();
-const { logOut } = useAuth();
+
+const signOut = () => {
+  authStore.signOut();
+};
 </script>
 
 <style scoped>
