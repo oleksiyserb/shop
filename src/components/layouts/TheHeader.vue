@@ -38,11 +38,14 @@
 <script setup lang="ts">
 import ShopingCart from "../icons/ShopingCart.vue";
 import { useAuthStore } from "@/stores/auth";
+import { useRouter } from "vue-router";
 
 const authStore = useAuthStore();
+const { replace } = useRouter();
 
 const signOut = () => {
   authStore.signOut();
+  replace("/");
 };
 </script>
 

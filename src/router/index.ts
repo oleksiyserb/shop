@@ -1,6 +1,8 @@
+import { useAuth } from "@/hooks/useAuth";
 import {
   createRouter,
   createWebHistory,
+  type RouteLocationNormalized,
   type RouteRecordRaw,
 } from "vue-router";
 
@@ -31,7 +33,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: "/cabinet",
     name: "cabinet",
-    meta: { title: "User Cabinet" },
+    meta: { title: "User Cabinet", requiredAuth: true },
     component: () => import("../views/auth/UserCabinet.vue"),
   },
   {
@@ -46,13 +48,28 @@ const router = createRouter({
   routes,
 });
 
-router.beforeEach((to, from, next) => {
+const switchTitle = (to: RouteLocationNormalized) => {
   const title = document.querySelector("title");
 
   if (title) {
     title.innerHTML = (to.meta.title as string) || "DogShop";
   }
-  next();
+};
+
+const { getCurrentUser } = useAuth();
+
+router.beforeEach(async (to, from, next) => {
+  if (to.matched.some((record) => record.meta.requiredAuth)) {
+    if (await getCurrentUser()) {
+      switchTitle(to);
+      next();
+    } else {
+      next("/");
+    }
+  } else {
+    switchTitle(to);
+    next();
+  }
 });
 
 export default router;
