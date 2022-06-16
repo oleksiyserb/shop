@@ -16,14 +16,28 @@ export const useAuthStore = defineStore({
     async signUp(fields: Auth): Promise<void> {
       const { signUp } = useAuth();
 
-      const userCredentials = await signUp(fields.email, fields.password);
-      this.autoAuth(userCredentials.user);
+      try {
+        const userCredentials = await signUp(fields.email, fields.password);
+        if (userCredentials) this.autoAuth(userCredentials.user);
+      } catch (err) {
+        if (err instanceof Error) {
+          const error = new Error(err.message || "Something went wrong");
+          throw error;
+        }
+      }
     },
     async signIn(user: { email: string; password: string }): Promise<void> {
       const { signIn } = useAuth();
 
-      const userCredentials = await signIn(user.email, user.password);
-      this.autoAuth(userCredentials.user);
+      try {
+        const userCredentials = await signIn(user.email, user.password);
+        if (userCredentials) this.autoAuth(userCredentials.user);
+      } catch (err) {
+        if (err instanceof Error) {
+          const error = new Error(err.message || "Something went wrong");
+          throw error;
+        }
+      }
     },
     async autoAuth(user: User) {
       if (user.email !== null && user.uid !== null) {

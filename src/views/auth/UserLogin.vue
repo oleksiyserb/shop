@@ -1,4 +1,7 @@
 <template>
+  <base-modal @close="closeModal" v-if="errorMessage" title="Error Message!">
+    <p>{{ errorMessage }}</p>
+  </base-modal>
   <section class="auth">
     <div class="container">
       <div class="auth__wrapper">
@@ -55,18 +58,31 @@ import { useAuthStore } from "@/stores/auth";
 const authStore = useAuthStore();
 const { replace } = useRouter();
 const isLoading = ref<boolean>(false);
+const errorMessage = ref<string | null>(null);
 
 const { onSubmit, getEmailField, getPassswordField } = useAuthForm(
   async (values: Auth): Promise<void> => {
-    isLoading.value = true;
-    await authStore.signIn(values);
-    isLoading.value = false;
+    try {
+      isLoading.value = true;
+      await authStore.signIn(values);
+      isLoading.value = false;
 
-    replace({ name: "main" });
+      replace({ name: "main" });
+    } catch (err) {
+      if (err instanceof Error) {
+        isLoading.value = false;
+        password.value = "";
+        errorMessage.value = err.message;
+      }
+    }
   }
 );
 
 const { email, emailBlur, emailChange, emailError } = getEmailField();
 const { password, passwordBlur, passwordChange, passwordError } =
   getPassswordField();
+
+const closeModal = () => {
+  errorMessage.value = null;
+};
 </script>

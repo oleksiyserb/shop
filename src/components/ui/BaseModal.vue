@@ -1,20 +1,22 @@
 <template>
-  <div class="mask" @click="emit('close')"></div>
-  <div class="modal" @click.stop>
-    <header>
-      <slot name="header">
-        <h1>{{ title }}</h1>
-      </slot>
-    </header>
-    <section>
-      <slot />
-    </section>
-    <footer>
-      <slot name="footer">
-        <base-button @click="emit('close')">Close</base-button>
-      </slot>
-    </footer>
-  </div>
+  <teleport to="body">
+    <div class="mask" @click="emit('close')"></div>
+    <div class="modal" @click.stop>
+      <header>
+        <slot name="header">
+          <h1>{{ title }}</h1>
+        </slot>
+      </header>
+      <section>
+        <slot />
+      </section>
+      <footer>
+        <slot name="footer">
+          <base-button @click="emit('close')">Close</base-button>
+        </slot>
+      </footer>
+    </div>
+  </teleport>
 </template>
 
 <script setup lang="ts">
