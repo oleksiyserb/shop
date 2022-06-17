@@ -1,7 +1,10 @@
 <template>
   <div class="product__item">
     <base-card>
-      <router-link class="product__link-mask" to="/collar"></router-link>
+      <router-link
+        class="product__link-mask"
+        :to="{ name: 'product', params: { id: id } }"
+      ></router-link>
       <header>
         <h4>{{ title }}</h4>
       </header>
@@ -14,6 +17,9 @@
             <star-icon :selected="getRating(i, rating)" />
           </li>
         </ul>
+        <div class="product__badge">
+          <base-badge :type="type" />
+        </div>
         <div class="product__actions">
           <strong>{{ formatedPrice }}</strong>
           <base-button>Add To Cart</base-button>
@@ -33,6 +39,7 @@ interface Product {
   price: number;
   picture: string;
   count: number;
+  type: string;
 }
 
 const props = defineProps<Product>();

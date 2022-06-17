@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
-import { collection, getFirestore } from "firebase/firestore";
+import { collection, getFirestore, doc } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCEBEylFVDY3ytLa90jm7AxdN_dSXpyD0c",
@@ -17,3 +17,6 @@ const db = getFirestore(app);
 
 export const auth = getAuth();
 export const productCollection = collection(db, "products");
+export const productRef = (id: string) => {
+  return doc(db, "products", id);
+};

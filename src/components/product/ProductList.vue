@@ -9,6 +9,7 @@
       :price="product.price"
       :picture="product.picture"
       :count="product.count"
+      :type="product.type"
     />
   </div>
 </template>

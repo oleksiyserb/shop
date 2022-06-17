@@ -16,6 +16,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: "/product/:id",
     name: "product",
+    props: true,
     component: () => import("../views/product/TheProduct.vue"),
   },
   {
