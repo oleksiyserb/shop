@@ -26,7 +26,9 @@
               <base-button :to="{ name: 'register' }" link>Sign Up</base-button>
             </li>
             <li>
-              <base-button>Cart <shoping-cart /></base-button>
+              <base-button class="link__cart" :to="{ name: 'cart' }" link
+                ><span>Cart</span> <shoping-cart
+              /></base-button>
             </li>
           </ul>
         </nav>
@@ -85,6 +87,14 @@ li {
   text-decoration: none;
   font-size: 1.125rem;
   transition: color 0.3s;
+}
+
+.link__cart {
+  display: flex;
+}
+
+.link__cart > span {
+  margin-right: 0.2em;
 }
 
 .link:hover {

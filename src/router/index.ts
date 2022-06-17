@@ -20,6 +20,12 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import("../views/product/TheProduct.vue"),
   },
   {
+    path: "/cart",
+    name: "cart",
+    meta: { title: "Shoping Cart" },
+    component: () => import("../views/cart/TheCart.vue"),
+  },
+  {
     path: "/login",
     name: "login",
     meta: { title: "Login to your account" },
