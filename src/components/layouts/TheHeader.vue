@@ -26,9 +26,9 @@
               <base-button :to="{ name: 'register' }" link>Sign Up</base-button>
             </li>
             <li>
-              <base-button class="link__cart" :to="{ name: 'cart' }" link
-                ><span>Cart</span> <shoping-cart
-              /></base-button>
+              <base-button class="link__cart" :to="{ name: 'cart' }" link>
+                <shoping-cart /> <span>Cart</span> ({{ countItems }})
+              </base-button>
             </li>
           </ul>
         </nav>
@@ -40,10 +40,15 @@
 <script setup lang="ts">
 import ShopingCart from "../icons/ShopingCart.vue";
 import { useAuthStore } from "@/stores/auth";
+import { useCartStore } from "@/stores/cart";
 import { useRouter } from "vue-router";
+import { computed } from "@vue/reactivity";
 
 const authStore = useAuthStore();
+const cartStore = useCartStore();
 const { replace } = useRouter();
+
+const countItems = computed(() => cartStore.countItems);
 
 const signOut = () => {
   authStore.signOut();

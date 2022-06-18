@@ -22,7 +22,7 @@
         </div>
         <div class="product__actions">
           <strong>{{ formatedPrice }}</strong>
-          <base-button>Add To Cart</base-button>
+          <base-button @click="addToCart">Add To Cart</base-button>
         </div>
       </div>
     </base-card>
@@ -30,6 +30,7 @@
 </template>
 
 <script setup lang="ts">
+import { useCartStore } from "@/stores/cart";
 import { computed } from "@vue/reactivity";
 import StarIcon from "../icons/StarIcon.vue";
 interface Product {
@@ -43,6 +44,7 @@ interface Product {
 }
 
 const props = defineProps<Product>();
+const cartStore = useCartStore();
 
 const formatedPrice = computed((): string => {
   if (String(props.price).length > 3) {
@@ -57,6 +59,10 @@ const formatedPrice = computed((): string => {
 
   return `₴ ${props.price}`;
 });
+
+const addToCart = () => {
+  cartStore.addToCart(props.id);
+};
 
 const getRating = (i: number, rating: number): boolean => {
   return rating - i >= 0;
