@@ -1,10 +1,19 @@
 import { ref } from "vue";
-import { getDocs, getDoc, query, where, documentId } from "@firebase/firestore";
+import {
+  getDocs,
+  getDoc,
+  query,
+  where,
+  documentId,
+  QuerySnapshot,
+} from "@firebase/firestore";
 import { productCollection, productRef } from "@/firebase";
 import { useHelpers } from "./useHelpers";
 import type Product from "@/models/ProductModel";
 import type ProductData from "@/models/ProductDataModel";
 import type Items from "@/models/ItemsModel";
+
+let errorCode: string;
 
 export const useProduct = () => {
   // Get Products From Firestore
@@ -39,7 +48,14 @@ export const useProduct = () => {
       productCollection,
       where(documentId(), "in", ids)
     );
-    const docsData = await getDocs(queryProducts);
+    const docsData: QuerySnapshot = await getDocs(queryProducts).catch(
+      (error) => (errorCode = error.code)
+    );
+
+    if (errorCode) {
+      const error = new Error(errorCode);
+      throw error;
+    }
 
     const products = docsData.docs.map((product) => {
       return { id: product.id, ...(product.data() as ProductData) };

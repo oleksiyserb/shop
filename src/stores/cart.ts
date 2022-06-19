@@ -14,7 +14,7 @@ export const useCartStore = defineStore({
     },
   },
   actions: {
-    addToCart(id: string): void {
+    addToCart(id: string, price: number): void {
       const cartItemIndex = this.items.findIndex((item) => {
         return item.id === id;
       });
@@ -22,10 +22,16 @@ export const useCartStore = defineStore({
       if (cartItemIndex >= 0) {
         this.items[cartItemIndex].count++;
       } else {
-        this.items.push({ id, count: 1 });
+        this.items.push({ id, count: 1, price });
       }
 
       this.quantity++;
+    },
+    increment(index: number) {
+      this.items[index].count++;
+    },
+    decrement(index: number) {
+      this.items[index].count--;
     },
   },
 });

@@ -49,7 +49,7 @@ const cartStore = useCartStore();
 const { formatedPrice } = useHelpers();
 
 const addToCart = () => {
-  cartStore.addToCart(props.id);
+  cartStore.addToCart(props.id, props.price);
 };
 
 const getRating = (i: number, rating: number): boolean => {

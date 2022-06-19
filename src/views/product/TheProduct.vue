@@ -22,7 +22,7 @@
               </ul>
             </div>
             <footer class="product__actions">
-              <base-button>Add To Cart</base-button>
+              <base-button @click="addToCart">Add To Cart</base-button>
             </footer>
           </div>
         </div>
@@ -37,6 +37,7 @@ import { ref } from "vue";
 import { useProduct } from "@/hooks/useProduct";
 import type ProductData from "@/models/ProductDataModel";
 import { useRouter } from "vue-router";
+import { useCartStore } from "@/stores/cart";
 
 const props = defineProps<{
   id: string;
@@ -44,6 +45,7 @@ const props = defineProps<{
 const product = ref<ProductData | null>(null);
 const { getCurrentProduct } = useProduct();
 const { replace } = useRouter();
+const cartStore = useCartStore();
 
 (async () => {
   product.value = await getCurrentProduct(props.id);
@@ -52,6 +54,10 @@ const { replace } = useRouter();
 
 const getRating = (i: number, rating: number): boolean => {
   return rating - i >= 0;
+};
+
+const addToCart = () => {
+  if (product.value) cartStore.addToCart(props.id, product.value.price);
 };
 </script>
 

@@ -6,7 +6,7 @@
           <h1>Cart Items: ({{ countItems }})</h1>
         </header>
         <div class="cart__items">
-          <template v-if="!isLoading">
+          <template v-if="!isLoading && products">
             <cart-item
               v-for="product in products"
               :key="product.id"
@@ -20,12 +20,13 @@
               @decrement="decrement"
             />
           </template>
+          <h1 class="empty-cart" v-else-if="isError">Cart is empty.</h1>
           <base-spinner v-else width="200px" height="200px" fill="#e15b64" />
         </div>
         <div class="cart__actions">
           <base-button>Buy Products</base-button>
           <span
-            >Total Price: <strong>{{ formatedPrice(totalPrice) }}</strong></span
+            >Total Price: <strong>{{ totalPrice }}</strong></span
           >
         </div>
       </base-card>
@@ -35,10 +36,9 @@
 
 <script setup lang="ts">
 import { useProduct } from "@/hooks/useProduct";
-import { ref } from "vue";
 import type Product from "@/models/ProductModel";
 import CartItem from "@/components/cart/CartItem.vue";
-import { computed } from "@vue/reactivity";
+import { ref, computed } from "@vue/reactivity";
 import { useHelpers } from "@/hooks/useHelpers";
 import { useCartStore } from "@/stores/cart";
 
@@ -46,22 +46,28 @@ const { formatedPrice } = useHelpers();
 const { getProductsByIds } = useProduct();
 const cartStore = useCartStore();
 const products = ref<Array<Product> | null>(null);
+const isError = ref<boolean>(false);
 const isLoading = ref<boolean>(false);
 
 (async () => {
   isLoading.value = true;
-  products.value = await getProductsByIds(cartStore.items);
+  try {
+    products.value = await getProductsByIds(cartStore.items);
+    isError.value = false;
+  } catch (err) {
+    isError.value = true;
+  }
   isLoading.value = false;
 })();
 
 const totalPrice = computed(() => {
   const count = ref<number>(0);
 
-  for (const key in products.value) {
-    count.value += products.value[key as unknown as number].price;
-  }
+  cartStore.items.forEach((item) => {
+    count.value += item.count * item.price;
+  });
 
-  return count.value;
+  return formatedPrice(count.value);
 });
 
 // All Count Items
@@ -78,7 +84,7 @@ const getCountItem = (id: string) => {
 const increment = (id: string) => {
   const currentItemIndex = cartStore.items.findIndex((item) => item.id === id);
 
-  cartStore.items[currentItemIndex].count++;
+  cartStore.increment(currentItemIndex);
 };
 
 // Decrement count item from store
@@ -88,7 +94,7 @@ const decrement = (id: string) => {
   if (cartStore.items[currentItemIndex].count <= 1) {
     return;
   }
-  cartStore.items[currentItemIndex].count--;
+  cartStore.decrement(currentItemIndex);
 };
 </script>
 
@@ -122,5 +128,11 @@ const decrement = (id: string) => {
 
 .cart__actions > button {
   color: var(--color-text);
+}
+
+.empty-cart {
+  text-align: center;
+  font-size: 1.5rem;
+  margin: 1em 0;
 }
 </style>
