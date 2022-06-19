@@ -21,7 +21,7 @@
           <base-badge :type="type" />
         </div>
         <div class="product__actions">
-          <strong>{{ formatedPrice }}</strong>
+          <strong>{{ formatedPrice(price) }}</strong>
           <base-button @click="addToCart">Add To Cart</base-button>
         </div>
       </div>
@@ -30,8 +30,8 @@
 </template>
 
 <script setup lang="ts">
+import { useHelpers } from "@/hooks/useHelpers";
 import { useCartStore } from "@/stores/cart";
-import { computed } from "@vue/reactivity";
 import StarIcon from "../icons/StarIcon.vue";
 interface Product {
   id: string;
@@ -46,19 +46,7 @@ interface Product {
 const props = defineProps<Product>();
 const cartStore = useCartStore();
 
-const formatedPrice = computed((): string => {
-  if (String(props.price).length > 3) {
-    const arrayPrice = String(props.price).split("").reverse();
-
-    for (let i = 3; arrayPrice.length > i; i += 4) {
-      arrayPrice.splice(i, 0, " ");
-    }
-
-    return `₴ ${arrayPrice.reverse().join("")}`;
-  }
-
-  return `₴ ${props.price}`;
-});
+const { formatedPrice } = useHelpers();
 
 const addToCart = () => {
   cartStore.addToCart(props.id);

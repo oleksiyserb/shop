@@ -1,8 +1,10 @@
-import { reactive, ref, type Ref } from "vue";
-import { getDocs, getDoc } from "@firebase/firestore";
+import { ref } from "vue";
+import { getDocs, getDoc, query, where, documentId } from "@firebase/firestore";
 import { productCollection, productRef } from "@/firebase";
+import { useHelpers } from "./useHelpers";
 import type Product from "@/models/ProductModel";
 import type ProductData from "@/models/ProductDataModel";
+import type Items from "@/models/ItemsModel";
 
 export const useProduct = () => {
   // Get Products From Firestore
@@ -27,5 +29,24 @@ export const useProduct = () => {
     return product;
   };
 
-  return { getProducts, getCurrentProduct };
+  const getProductsByIds = async (
+    items: Array<Items>
+  ): Promise<Array<Product>> => {
+    const { getIdsFromStore } = useHelpers();
+    const ids = getIdsFromStore(items);
+
+    const queryProducts = query(
+      productCollection,
+      where(documentId(), "in", ids)
+    );
+    const docsData = await getDocs(queryProducts);
+
+    const products = docsData.docs.map((product) => {
+      return { id: product.id, ...(product.data() as ProductData) };
+    });
+
+    return products;
+  };
+
+  return { getProducts, getProductsByIds, getCurrentProduct };
 };

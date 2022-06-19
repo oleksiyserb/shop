@@ -1,34 +1,51 @@
 <template>
   <div class="cart__item">
     <picture>
-      <img
-        src="https://images.unsplash.com/photo-1534719521254-e98a61a0a037?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80"
-        alt="collar"
-      />
+      <img :src="picture" alt="collar" />
     </picture>
     <div class="cart__item-content">
-      <h1>Title and title</h1>
+      <h1>{{ title }}</h1>
       <p>
-        Ullamcorper malesuada proin libero nunc consequat interdum. Quam nulla
-        porttitor massa id. Aliquam malesuada bibendum arcu vitae elementum
-        curabitur vitae nunc sed. Rhoncus urna neque viverra justo nec ultrices.
-        Arcu dictum varius duis at. Consectetur adipiscing elit pellentesque
-        habitant. Quam nulla porttitor massa id neque aliquam vestibulum morbi.
-        Aliquam ultrices sagittis orci a scelerisque purus semper. Nunc vel
-        risus commodo viverra maecenas accumsan lacus vel facilisis. Massa eget
-        egestas purus viverra accumsan in nisl.
+        {{ description }}
       </p>
       <div class="cart__item-details">
         <div class="cart__item-count">
-          <button>-</button>
-          <span>0</span>
-          <button>+</button>
+          <button @click="emit('decrement', id)">-</button>
+          <span>{{ countItem }}</span>
+          <button @click="emit('increment', id)">+</button>
         </div>
-        <strong>$ 2000</strong>
+        <strong>{{ fullPrice }}</strong>
       </div>
     </div>
   </div>
 </template>
+
+<script setup lang="ts">
+import { useHelpers } from "@/hooks/useHelpers";
+import { computed } from "@vue/reactivity";
+
+const props = defineProps<{
+  id: string;
+  picture: string;
+  title: string;
+  description: string;
+  price: number;
+  countItem: number;
+}>();
+
+const emit = defineEmits<{
+  (e: "decrement", id: string): void;
+  (e: "increment", id: string): void;
+}>();
+
+const { formatedPrice } = useHelpers();
+
+const fullPrice = computed(() => {
+  const price = props.countItem * props.price;
+
+  return formatedPrice(price);
+});
+</script>
 
 <style scoped>
 .cart__item {

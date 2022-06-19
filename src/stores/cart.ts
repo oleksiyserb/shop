@@ -20,9 +20,9 @@ export const useCartStore = defineStore({
       });
 
       if (cartItemIndex >= 0) {
-        this.items[cartItemIndex].quantity++;
+        this.items[cartItemIndex].count++;
       } else {
-        this.items.push({ id, quantity: 1 });
+        this.items.push({ id, count: 1 });
       }
 
       this.quantity++;
