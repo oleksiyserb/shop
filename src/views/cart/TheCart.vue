@@ -16,11 +16,15 @@
               :price="product.price"
               :picture="product.picture"
               :count-item="getCountItem(product.id)"
+              @delete="handleDelete"
               @increment="increment"
               @decrement="decrement"
             />
           </template>
-          <h1 class="empty-cart" v-else-if="isError">Cart is empty.</h1>
+          <h1 class="empty-cart" v-else-if="isError || countItems <= 0">
+            Cart is empty
+            <router-link :to="{ name: 'main' }">go back</router-link>
+          </h1>
           <base-spinner v-else width="200px" height="200px" fill="#e15b64" />
         </div>
         <div class="cart__actions">
@@ -95,6 +99,13 @@ const decrement = (id: string) => {
     return;
   }
   cartStore.decrement(currentItemIndex);
+};
+
+const handleDelete = (id: string) => {
+  cartStore.handleDelete(id);
+
+  if (products.value)
+    products.value = products.value.filter((product) => product.id !== id);
 };
 </script>
 

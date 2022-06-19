@@ -25,5 +25,12 @@ export const useHelpers = () => {
     return newArray;
   };
 
-  return { getIdsFromStore, formatedPrice };
+  const getShort = (text: string, stringQuantity: number): string => {
+    if (text.length < stringQuantity) {
+      return text;
+    }
+    return text.slice(0, stringQuantity) + "...";
+  };
+
+  return { getIdsFromStore, formatedPrice, getShort };
 };

@@ -26,12 +26,44 @@ export const useCartStore = defineStore({
       }
 
       this.quantity++;
+      localStorage.setItem(
+        "cart",
+        JSON.stringify({ items: this.items, quantity: this.quantity })
+      );
+    },
+    initializeCart() {
+      const storage = JSON.parse(localStorage.getItem("cart") as string);
+
+      if (storage) {
+        this.items = [...storage.items];
+        this.quantity = storage.quantity;
+      }
+    },
+    handleDelete(id: string) {
+      const countItems = this.items.find((item) => item.id === id)?.count;
+      if (countItems) this.quantity = this.quantity - countItems;
+
+      this.items = this.items.filter((item) => item.id !== id);
+      localStorage.setItem(
+        "cart",
+        JSON.stringify({ items: this.items, quantity: this.quantity })
+      );
     },
     increment(index: number) {
       this.items[index].count++;
+      this.quantity++;
+      localStorage.setItem(
+        "cart",
+        JSON.stringify({ items: this.items, quantity: this.quantity })
+      );
     },
     decrement(index: number) {
       this.items[index].count--;
+      this.quantity--;
+      localStorage.setItem(
+        "cart",
+        JSON.stringify({ items: this.items, quantity: this.quantity })
+      );
     },
   },
 });

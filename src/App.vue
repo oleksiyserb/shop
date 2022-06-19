@@ -12,9 +12,13 @@ import TheFooter from "./components/layouts/TheFooter.vue";
 import { useAuth } from "./hooks/useAuth";
 import { onBeforeMount } from "vue";
 import { useAuthStore } from "./stores/auth";
+import { useCartStore } from "./stores/cart";
 
 const { getCurrentUser } = useAuth();
 const authStore = useAuthStore();
+const cartStore = useCartStore();
+
+cartStore.initializeCart();
 
 onBeforeMount(async () => {
   const user = await getCurrentUser();

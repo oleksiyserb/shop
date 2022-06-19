@@ -6,7 +6,7 @@
         :to="{ name: 'product', params: { id: id } }"
       ></router-link>
       <header>
-        <h4>{{ title }}</h4>
+        <h4>{{ getShort(title, 36) }}</h4>
       </header>
       <picture>
         <img :src="picture" alt="collar" />
@@ -46,7 +46,7 @@ interface Product {
 const props = defineProps<Product>();
 const cartStore = useCartStore();
 
-const { formatedPrice } = useHelpers();
+const { formatedPrice, getShort } = useHelpers();
 
 const addToCart = () => {
   cartStore.addToCart(props.id, props.price);

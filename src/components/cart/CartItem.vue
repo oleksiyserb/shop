@@ -1,5 +1,6 @@
 <template>
   <div class="cart__item">
+    <button @click="emit('delete', id)"><trash-icon /></button>
     <picture>
       <img :src="picture" alt="collar" />
     </picture>
@@ -23,6 +24,7 @@
 <script setup lang="ts">
 import { useHelpers } from "@/hooks/useHelpers";
 import { computed } from "@vue/reactivity";
+import TrashIcon from "../icons/TrashIcon.vue";
 
 const props = defineProps<{
   id: string;
@@ -36,6 +38,7 @@ const props = defineProps<{
 const emit = defineEmits<{
   (e: "decrement", id: string): void;
   (e: "increment", id: string): void;
+  (e: "delete", id: string): void;
 }>();
 
 const { formatedPrice } = useHelpers();
@@ -51,6 +54,23 @@ const fullPrice = computed(() => {
 .cart__item {
   margin: var(--section-gap) 0;
   display: flex;
+  position: relative;
+}
+
+.cart__item > button {
+  position: absolute;
+  right: 1em;
+  top: 0;
+  border: none;
+  background-color: transparent;
+}
+
+.cart__item > button svg {
+  transition: fill 0.3s;
+}
+
+.cart__item > button:hover svg {
+  fill: var(--color-link-hover);
 }
 
 picture > img {
