@@ -6,11 +6,12 @@
     <div class="product">
       <product-filter />
       <section class="product__main">
-        <h1>All Products | Filter result:</h1>
         <suspense>
           <product-list />
           <template #fallback>
-            <base-spinner width="200px" height="200px" fill="#e15b64" />
+            <div class="wrapper">
+              <product-item-skeleton v-for="i in 6" :key="i" />
+            </div>
           </template>
         </suspense>
       </section>
@@ -20,6 +21,7 @@
 
 <script setup lang="ts">
 import ProductFilter from "../../components/product/ProductFilter.vue";
+import ProductItemSkeleton from "@/components/product/ProductItemSkeleton.vue";
 import ProductList from "../../components/product/ProductList.vue";
 </script>
 
@@ -65,14 +67,5 @@ import ProductList from "../../components/product/ProductList.vue";
   .product__main {
     grid-column: span 12;
   }
-}
-
-.product__main > h1 {
-  margin-bottom: 1em;
-}
-
-h1 {
-  font-size: 1.5rem;
-  font-weight: bold;
 }
 </style>

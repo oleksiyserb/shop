@@ -153,3 +153,9 @@ main {
   margin-top: 0.5em;
   color: var(--color-text-warn);
 }
+
+.wrapper {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: var(--section-gap);
+}

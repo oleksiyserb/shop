@@ -1,5 +1,5 @@
 <template>
-  <div class="product__wrapper">
+  <div class="wrapper">
     <product-item
       v-for="product in products"
       :key="product.id"
@@ -21,11 +21,3 @@ const { getProducts } = useProduct();
 
 const products = await getProducts();
 </script>
-
-<style scoped>
-.product__wrapper {
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  gap: var(--section-gap);
-}
-</style>
