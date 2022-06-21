@@ -6,7 +6,7 @@
           <h1>Cart Items: ({{ countItems }})</h1>
         </header>
         <div class="cart__items">
-          <template v-if="!isLoading && products">
+          <template v-if="!isLoading && products!.length > 0">
             <cart-item
               v-for="product in products"
               :key="product.id"
@@ -52,14 +52,20 @@ const cartStore = useCartStore();
 const products = ref<Array<Product> | null>(null);
 const isError = ref<boolean>(false);
 const isLoading = ref<boolean>(false);
+const storageProduct = JSON.parse(localStorage.getItem("cartItems") as string);
 
 (async () => {
   isLoading.value = true;
-  try {
-    products.value = await getProductsByIds(cartStore.items);
-    isError.value = false;
-  } catch (err) {
-    isError.value = true;
+  if (storageProduct) {
+    products.value = storageProduct;
+  } else {
+    try {
+      products.value = await getProductsByIds(cartStore.items);
+      localStorage.setItem("cartItems", JSON.stringify(products.value));
+      isError.value = false;
+    } catch (err) {
+      isError.value = true;
+    }
   }
   isLoading.value = false;
 })();
@@ -106,6 +112,8 @@ const handleDelete = (id: string) => {
 
   if (products.value)
     products.value = products.value.filter((product) => product.id !== id);
+
+  localStorage.setItem("cartItems", JSON.stringify(products.value));
 };
 </script>
 
