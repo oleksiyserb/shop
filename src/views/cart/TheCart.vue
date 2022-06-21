@@ -6,7 +6,7 @@
           <h1>Cart Items: ({{ countItems }})</h1>
         </header>
         <div class="cart__items">
-          <template v-if="!isLoading && products!.length > 0">
+          <template v-if="!isLoading && products !== null">
             <cart-item
               v-for="product in products"
               :key="product.id"
@@ -52,12 +52,14 @@ const cartStore = useCartStore();
 const products = ref<Array<Product> | null>(null);
 const isError = ref<boolean>(false);
 const isLoading = ref<boolean>(false);
-const storageProduct = JSON.parse(localStorage.getItem("cartItems") as string);
+const storageProducts: Array<Product> = JSON.parse(
+  localStorage.getItem("cartItems") as string
+);
 
 (async () => {
   isLoading.value = true;
-  if (storageProduct) {
-    products.value = storageProduct;
+  if (storageProducts && storageProducts.length > 0) {
+    products.value = storageProducts;
   } else {
     try {
       products.value = await getProductsByIds(cartStore.items);
