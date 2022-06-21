@@ -1,4 +1,4 @@
-import { ref } from "vue";
+import { onBeforeUnmount, ref } from "vue";
 import {
   getDocs,
   getDoc,
@@ -6,6 +6,10 @@ import {
   where,
   documentId,
   QuerySnapshot,
+  limit,
+  orderBy,
+  startAfter,
+  type DocumentData,
 } from "@firebase/firestore";
 import { productCollection, productRef } from "@/firebase";
 import { useHelpers } from "./useHelpers";
@@ -14,12 +18,27 @@ import type ProductData from "@/models/ProductDataModel";
 import type Items from "@/models/ItemsModel";
 
 let errorCode: string;
+let latestProduct: DocumentData | null;
 
 export const useProduct = () => {
-  // Get Products From Firestore
-  const getProducts = async () => {
+  onBeforeUnmount(() => {
+    latestProduct = null;
+  });
+
+  const getProducts = async (quantity: number) => {
     const products = ref<Array<Product> | null>(null);
-    const queryProducts = await getDocs(productCollection);
+    const productQuery = query(
+      productCollection,
+      orderBy("createdAt"),
+      startAfter(latestProduct || 0),
+      limit(quantity)
+    );
+
+    const queryProducts = await getDocs(productQuery);
+    if (queryProducts.empty) {
+      return;
+    }
+    latestProduct = queryProducts.docs[queryProducts.docs.length - 1];
 
     products.value = queryProducts.docs.map((product) => {
       return { id: product.id, ...(product.data() as ProductData) };

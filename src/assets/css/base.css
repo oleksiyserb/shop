@@ -33,6 +33,7 @@
   --color-button-hover: var(--red-hover);
 
   --color-border: var(--gray-bg);
+  --color-border-secondary: var(--red-primary);
   --color-border-focus: var(--red-primary);
 
   --color-input-focus: 0 0 0 0.25rem var(--red-focus);
