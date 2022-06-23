@@ -1,7 +1,7 @@
 <template>
   <section class="product">
     <div class="container">
-      <base-card v-if="product">
+      <base-card v-if="product && Object.keys(product).length !== 0">
         <div class="product__grid">
           <picture>
             <img :src="product.picture" alt="picture" />
@@ -49,7 +49,7 @@ const cartStore = useCartStore();
 
 (async () => {
   product.value = await getCurrentProduct(props.id);
-  if (product.value === null) replace({ name: "main" });
+  if (Object.keys(product.value).length === 0) replace({ name: "404" });
 })();
 
 const getRating = (i: number, rating: number): boolean => {

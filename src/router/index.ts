@@ -45,6 +45,7 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: "/:notFound(.*)*",
+    name: "404",
     meta: { title: "404 - Page Not Found" },
     component: () => import("../views/NotFound.vue"),
   },
