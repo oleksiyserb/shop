@@ -1,7 +1,11 @@
 <template>
   <the-header />
   <main>
-    <router-view />
+    <router-view v-slot="{ Component }">
+      <transition name="fade" mode="out-in">
+        <component :is="Component"></component>
+      </transition>
+    </router-view>
   </main>
   <the-footer />
 </template>
@@ -32,4 +36,24 @@ onBeforeMount(async () => {
 <style>
 @import "@/assets/css/reset.css";
 @import "@/assets/css/base.css";
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+  transform: translateY(-20px);
+}
+
+.fade-enter-active {
+  transition: all 0.3s ease-in;
+}
+
+.fade-leave-active {
+  transition: all 0.3s ease-out;
+}
+
+.fade-enter-to,
+.fade-leave-from {
+  opacity: 1;
+  transform: translateY(0);
+}
 </style>
