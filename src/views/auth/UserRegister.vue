@@ -15,6 +15,30 @@
           </header>
           <form @submit.prevent="onSubmit" class="auth__form">
             <div class="auth__form-control">
+              <label for="name">Enter your name</label>
+              <input
+                type="text"
+                name="name"
+                id="name"
+                :value="name"
+                @change="nameChange"
+                @blur="nameBlur"
+              />
+              <span>{{ nameError }}</span>
+            </div>
+            <div class="auth__form-control">
+              <label for="surname">Enter your surname</label>
+              <input
+                type="text"
+                name="surname"
+                id="surname"
+                :value="surname"
+                @change="surnameChange"
+                @blur="surnameBlur"
+              />
+              <span>{{ surnameError }}</span>
+            </div>
+            <div class="auth__form-control">
               <label for="email">Enter your email</label>
               <input
                 type="email"
@@ -50,7 +74,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref } from "@vue/reactivity";
 import { useAuthForm } from "../../hooks/useAuthForm";
 import type Auth from "@/models/AuthModel";
 import { useRouter } from "vue-router";
@@ -61,26 +85,32 @@ const isLoading = ref<boolean>(false);
 const authStore = useAuthStore();
 const errorMessage = ref<string | null>(null);
 
-const { onSubmit, getEmailField, getPassswordField } = useAuthForm(
-  async (values: Auth): Promise<void> => {
-    try {
-      isLoading.value = true;
-      await authStore.signUp(values);
-      isLoading.value = false;
+const {
+  onSubmit,
+  getNameField,
+  getSurnameField,
+  getEmailField,
+  getPassswordField,
+} = useAuthForm(async (values: Auth): Promise<void> => {
+  try {
+    isLoading.value = true;
+    await authStore.signUp(values);
+    isLoading.value = false;
 
-      replace({ name: "main" });
-    } catch (err) {
-      if (err instanceof Error) {
-        isLoading.value = false;
-        errorMessage.value = err.message;
-      }
+    replace({ name: "main" });
+  } catch (err) {
+    if (err instanceof Error) {
+      isLoading.value = false;
+      errorMessage.value = err.message;
     }
   }
-);
+}, "signUp");
 
 const { email, emailBlur, emailChange, emailError } = getEmailField();
 const { password, passwordBlur, passwordChange, passwordError } =
   getPassswordField();
+const { name, nameBlur, nameChange, nameError } = getNameField();
+const { surname, surnameBlur, surnameChange, surnameError } = getSurnameField();
 
 const closeModal = () => {
   errorMessage.value = null;

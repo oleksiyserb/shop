@@ -8,6 +8,7 @@ export const useAuthStore = defineStore({
   id: "auth",
   state: () =>
     ({
+      displayName: null,
       uid: null,
       email: null,
       isLogin: false,
@@ -17,8 +18,13 @@ export const useAuthStore = defineStore({
       const { signUp } = useAuth();
 
       try {
-        const userCredentials = await signUp(fields.email, fields.password);
-        if (userCredentials) this.autoAuth(userCredentials.user);
+        const userCredentials = await signUp(
+          fields.name,
+          fields.surname,
+          fields.email,
+          fields.password
+        );
+        if (userCredentials) this.autoAuth(userCredentials);
       } catch (err) {
         if (err instanceof Error) {
           const error = new Error(err.message || "Something went wrong");
@@ -40,8 +46,13 @@ export const useAuthStore = defineStore({
       }
     },
     async autoAuth(user: User) {
-      if (user.email !== null && user.uid !== null) {
+      if (
+        user.email !== null &&
+        user.uid !== null &&
+        user.displayName !== null
+      ) {
         this.$patch({
+          displayName: user.displayName,
           uid: user.uid,
           email: user.email,
           isLogin: true,

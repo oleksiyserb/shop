@@ -75,7 +75,8 @@ const { onSubmit, getEmailField, getPassswordField } = useAuthForm(
         errorMessage.value = err.message;
       }
     }
-  }
+  },
+  "signIn"
 );
 
 const { email, emailBlur, emailChange, emailError } = getEmailField();
