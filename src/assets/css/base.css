@@ -9,6 +9,7 @@
   --light-gray: hsl(var(--default) 17%);
 
   --red-primary: hsl(var(--red), 70%);
+  --red-disabled: hsl(var(--red), 80%);
   --red-hover: hsl(var(--red), 65%);
   --red-focus: hsl(var(--red), 90%);
 }
@@ -30,6 +31,7 @@
   --color-link-hover: var(--red-primary);
 
   --color-button: var(--red-primary);
+  --color-button-disabled: var(--red-disabled);
   --color-button-hover: var(--red-hover);
 
   --color-border: var(--gray-bg);

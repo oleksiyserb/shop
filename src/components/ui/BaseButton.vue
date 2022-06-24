@@ -35,4 +35,8 @@ a.flat {
 .flat:hover {
   background-color: var(--color-button-hover);
 }
+
+button:disabled {
+  background-color: var(--color-button-disabled);
+}
 </style>

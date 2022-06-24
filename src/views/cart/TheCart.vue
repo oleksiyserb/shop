@@ -28,7 +28,9 @@
           <base-spinner v-else width="200px" height="200px" fill="#e15b64" />
         </div>
         <div class="cart__actions">
-          <base-button>Buy Products</base-button>
+          <base-button @click="handleOrdering" :disabled="countItems <= 0"
+            >Ordering</base-button
+          >
           <span
             >Total Price: <strong>{{ totalPrice }}</strong></span
           >
@@ -116,6 +118,10 @@ const handleDelete = (id: string) => {
     products.value = products.value.filter((product) => product.id !== id);
 
   localStorage.setItem("cartItems", JSON.stringify(products.value));
+};
+
+const handleOrdering = () => {
+  alert("Ordering");
 };
 </script>
 
