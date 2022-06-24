@@ -13,6 +13,11 @@ export const useAuthStore = defineStore({
       email: null,
       isLogin: false,
     } as CurrentUser),
+  getters: {
+    userName: (state) => state.displayName,
+    userId: (state) => state.uid,
+    userEmail: (state) => state.email,
+  },
   actions: {
     async signUp(fields: Auth): Promise<void> {
       const { signUp } = useAuth();

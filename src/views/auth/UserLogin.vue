@@ -74,7 +74,7 @@ const { onSubmit, getEmailField, getPassswordField } = useAuthForm(
       await authStore.signIn(values);
       isLoading.value = false;
 
-      replace({ name: "main" });
+      replace({ name: "cabinet" });
     } catch (err) {
       if (err instanceof Error) {
         isLoading.value = false;
