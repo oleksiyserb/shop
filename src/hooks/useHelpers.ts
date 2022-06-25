@@ -1,4 +1,5 @@
 import type Items from "@/models/ItemsModel";
+import type Types from "@/models/TypesModel";
 
 export const useHelpers = () => {
   const formatedPrice = (price: number) => {

@@ -6,39 +6,72 @@
       </header>
       <div class="product__actions">
         <div class="product__actions-item">
-          <h3>Types([count]):</h3>
+          <h3>Types:</h3>
           <ul class="product__type">
             <li>
-              <input id="canvas" type="checkbox" />
+              <input
+                id="canvas"
+                type="checkbox"
+                checked
+                @change="typeChanged"
+              />
               <label for="canvas">Canvas</label>
             </li>
             <li>
-              <input id="sport" type="checkbox" />
+              <input id="sport" type="checkbox" checked @change="typeChanged" />
               <label for="sport">Sport</label>
             </li>
             <li>
-              <input id="water-repellent" type="checkbox" />
-              <label for="water-repellent">Water-repellent</label>
+              <input
+                id="waterRepellent"
+                type="checkbox"
+                checked
+                @change="typeChanged"
+              />
+              <label for="waterRepellent">Water-repellent</label>
             </li>
           </ul>
         </div>
         <div class="product__actions-item">
           <h3>Sort By Price:</h3>
-          <ul class="product__radios">
-            <li>
-              <input type="radio" id="asc" name="price" value="ASC" checked />
-              <label for="asc">ASC</label>
-            </li>
-            <li>
-              <input type="radio" id="desc" name="price" value="DESC" />
-              <label for="desc">DESC</label>
-            </li>
-          </ul>
+          <select name="price" id="price" v-model="sortPrice">
+            <option value="none" selected>Without sorting</option>
+            <option value="asc">At the highest price</option>
+            <option value="desc">At the lowest price</option>
+          </select>
         </div>
       </div>
     </base-card>
   </aside>
 </template>
+
+<script setup lang="ts">
+import { ref } from "@vue/reactivity";
+import type Types from "@/models/TypesModel";
+
+const emit = defineEmits<{
+  (e: "change-type", updatedTypes: Types): void;
+}>();
+
+const types = ref<Types>({
+  canvas: true,
+  sport: true,
+  waterRepellent: true,
+});
+const sortPrice = ref<string>("none");
+
+const typeChanged = (e: any) => {
+  const inputId = e.target.id;
+  const isActive = e.target.checked;
+
+  const updatedTypes = {
+    ...types.value,
+    [inputId]: isActive,
+  };
+  types.value = updatedTypes;
+  emit("change-type", updatedTypes);
+};
+</script>
 
 <style scoped>
 header {

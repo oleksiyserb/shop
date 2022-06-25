@@ -19,7 +19,7 @@ const selectColor = (type: string) => {
     case "sport":
       style = "brown";
       break;
-    case "water-repellent":
+    case "waterRepellent":
       style = "blue";
       break;
     default:

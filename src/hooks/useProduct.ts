@@ -1,4 +1,4 @@
-import { onBeforeUnmount, ref } from "vue";
+import { onBeforeUnmount } from "vue";
 import {
   getDocs,
   getDoc,
@@ -16,6 +16,7 @@ import { useHelpers } from "./useHelpers";
 import type Product from "@/models/ProductModel";
 import type ProductData from "@/models/ProductDataModel";
 import type Items from "@/models/ItemsModel";
+import type Types from "@/models/TypesModel";
 
 let errorCode: string;
 let latestProduct: DocumentData | null;
@@ -25,8 +26,10 @@ export const useProduct = () => {
     latestProduct = null;
   });
 
-  const getProducts = async (quantity: number) => {
-    const products = ref<Array<Product> | null>(null);
+  const getProducts = async (
+    quantity: number
+  ): Promise<Array<Product> | null | void> => {
+    let products: Array<Product> | null = null;
     const productQuery = query(
       productCollection,
       orderBy("createdAt"),
@@ -40,9 +43,33 @@ export const useProduct = () => {
     }
     latestProduct = queryProducts.docs[queryProducts.docs.length - 1];
 
-    products.value = queryProducts.docs.map((product) => {
+    products = queryProducts.docs.map((product) => {
       return { id: product.id, ...(product.data() as ProductData) };
     });
+
+    return products;
+  };
+
+  const getSortedProducts = async (sortedValues: Types) => {
+    let products: Array<Product> | null = null;
+    const arraySortedValues: Array<string> = [];
+
+    for (const key in sortedValues) {
+      if (sortedValues[key as never]) {
+        arraySortedValues.push(key);
+      }
+    }
+    const productQuery = query(
+      productCollection,
+      where("type", "in", arraySortedValues)
+    );
+
+    const queryProducts = await getDocs(productQuery);
+
+    if (queryProducts)
+      products = queryProducts.docs.map((product) => {
+        return { id: product.id, ...(product.data() as ProductData) };
+      });
 
     return products;
   };
@@ -83,5 +110,10 @@ export const useProduct = () => {
     return products;
   };
 
-  return { getProducts, getProductsByIds, getCurrentProduct };
+  return {
+    getProducts,
+    getProductsByIds,
+    getCurrentProduct,
+    getSortedProducts,
+  };
 };

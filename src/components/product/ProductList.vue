@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper">
+  <div class="wrapper" v-if="!errorMessage">
     <product-item
       v-for="product in products"
       :key="product.id"
@@ -12,6 +12,7 @@
       :type="product.type"
     />
   </div>
+  <strong v-else>{{ errorMessage }}</strong>
   <div class="update-button">
     <base-button @click="loadMoreProducts">Load More Products</base-button>
   </div>
@@ -20,15 +21,36 @@
 <script setup lang="ts">
 import ProductItem from "./ProductItem.vue";
 import { useProduct } from "@/hooks/useProduct";
+import type Types from "@/models/TypesModel";
+import { onBeforeMount, ref, toRefs, watch } from "vue";
+import type Product from "@/models/ProductModel";
 
-const { getProducts } = useProduct();
+const products = ref<Array<Product> | null | void>(null);
+const errorMessage = ref<string | null>(null);
+const { getProducts, getSortedProducts } = useProduct();
 
-const products = await getProducts(6);
+onBeforeMount(async () => {
+  products.value = await getProducts(6);
+});
 
 const loadMoreProducts = async () => {
   const loadProducts = await getProducts(3);
-  if (products && loadProducts) products.value!.push(...loadProducts!.value!);
+  if (loadProducts && products.value) products.value.push(...loadProducts);
 };
+
+const props = defineProps<{
+  types: Types;
+}>();
+const { types } = toRefs(props);
+
+watch(types, async (values) => {
+  try {
+    errorMessage.value = null;
+    products.value = await getSortedProducts(values);
+  } catch (err) {
+    errorMessage.value = "Products is empty. Please select type.";
+  }
+});
 </script>
 
 <style scoped>

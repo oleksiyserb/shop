@@ -4,10 +4,10 @@
       <img src="../../assets/img/hero.jpg" alt="hero" />
     </picture>
     <div class="product">
-      <product-filter />
+      <product-filter @change-type="setTypes" />
       <section class="product__main">
         <suspense>
-          <product-list />
+          <product-list :types="types" />
           <template #fallback>
             <div class="wrapper">
               <product-item-skeleton v-for="i in 6" :key="i" />
@@ -23,6 +23,18 @@
 import ProductFilter from "../../components/product/ProductFilter.vue";
 import ProductItemSkeleton from "@/components/product/ProductItemSkeleton.vue";
 import ProductList from "../../components/product/ProductList.vue";
+import { ref } from "@vue/reactivity";
+import type Types from "@/models/TypesModel";
+
+const types = ref<Types>({
+  canvas: true,
+  sport: true,
+  waterRepellent: true,
+});
+
+const setTypes = (updatedTypes: Types) => {
+  types.value = updatedTypes;
+};
 </script>
 
 <style scoped>

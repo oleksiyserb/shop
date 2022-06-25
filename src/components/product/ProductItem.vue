@@ -6,7 +6,7 @@
         :to="{ name: 'product', params: { id: id } }"
       ></router-link>
       <header>
-        <h4>{{ getShort(title, 36) }}</h4>
+        <h4>{{ getShort(title, 34) }}</h4>
       </header>
       <picture>
         <img :src="picture" alt="collar" />
