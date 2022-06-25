@@ -32,14 +32,6 @@
             </li>
           </ul>
         </div>
-        <div class="product__actions-item">
-          <h3>Sort By Price:</h3>
-          <select name="price" id="price" v-model="sortPrice">
-            <option value="none" selected>Without sorting</option>
-            <option value="asc">At the highest price</option>
-            <option value="desc">At the lowest price</option>
-          </select>
-        </div>
       </div>
     </base-card>
   </aside>
@@ -58,7 +50,6 @@ const types = ref<Types>({
   sport: true,
   waterRepellent: true,
 });
-const sortPrice = ref<string>("none");
 
 const typeChanged = (e: any) => {
   const inputId = e.target.id;

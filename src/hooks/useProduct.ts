@@ -1,4 +1,3 @@
-import { onBeforeUnmount } from "vue";
 import {
   getDocs,
   getDoc,
@@ -6,10 +5,7 @@ import {
   where,
   documentId,
   QuerySnapshot,
-  limit,
   orderBy,
-  startAfter,
-  type DocumentData,
 } from "@firebase/firestore";
 import { productCollection, productRef } from "@/firebase";
 import { useHelpers } from "./useHelpers";
@@ -19,39 +15,14 @@ import type Items from "@/models/ItemsModel";
 import type Types from "@/models/TypesModel";
 
 let errorCode: string;
-let latestProduct: DocumentData | null;
 
 export const useProduct = () => {
-  onBeforeUnmount(() => {
-    latestProduct = null;
-  });
-
   const getProducts = async (
-    quantity: number
+    sortedValues: Types | null = null
   ): Promise<Array<Product> | null | void> => {
     let products: Array<Product> | null = null;
-    const productQuery = query(
-      productCollection,
-      orderBy("createdAt"),
-      startAfter(latestProduct || 0),
-      limit(quantity)
-    );
+    let productQuery;
 
-    const queryProducts = await getDocs(productQuery);
-    if (queryProducts.empty) {
-      return;
-    }
-    latestProduct = queryProducts.docs[queryProducts.docs.length - 1];
-
-    products = queryProducts.docs.map((product) => {
-      return { id: product.id, ...(product.data() as ProductData) };
-    });
-
-    return products;
-  };
-
-  const getSortedProducts = async (sortedValues: Types) => {
-    let products: Array<Product> | null = null;
     const arraySortedValues: Array<string> = [];
 
     for (const key in sortedValues) {
@@ -59,17 +30,21 @@ export const useProduct = () => {
         arraySortedValues.push(key);
       }
     }
-    const productQuery = query(
-      productCollection,
-      where("type", "in", arraySortedValues)
-    );
+
+    if (sortedValues) {
+      productQuery = query(
+        productCollection,
+        where("type", "in", arraySortedValues)
+      );
+    } else {
+      productQuery = query(productCollection, orderBy("createdAt"));
+    }
 
     const queryProducts = await getDocs(productQuery);
 
-    if (queryProducts)
-      products = queryProducts.docs.map((product) => {
-        return { id: product.id, ...(product.data() as ProductData) };
-      });
+    products = queryProducts.docs.map((product) => {
+      return { id: product.id, ...(product.data() as ProductData) };
+    });
 
     return products;
   };
@@ -114,6 +89,5 @@ export const useProduct = () => {
     getProducts,
     getProductsByIds,
     getCurrentProduct,
-    getSortedProducts,
   };
 };
