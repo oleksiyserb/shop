@@ -28,7 +28,7 @@
           <base-spinner v-else width="200px" height="200px" fill="#e15b64" />
         </div>
         <div class="cart__actions">
-          <base-button @click="handleOrdering" :disabled="countItems <= 0"
+          <base-button :to="{ name: 'ordering' }" v-if="countItems > 0" link
             >Ordering</base-button
           >
           <span

@@ -9,6 +9,7 @@ import BaseCard from "./components/ui/BaseCard.vue";
 import BaseSpinner from "./components/ui/BaseSpinner.vue";
 import BaseModal from "./components/ui/BaseModal.vue";
 import BaseBadge from "./components/ui/BaseBadge.vue";
+import BaseSelect from "./components/ui/BaseSelect.vue";
 
 const app = createApp(App);
 
@@ -20,5 +21,6 @@ app.component("base-card", BaseCard);
 app.component("base-spinner", BaseSpinner);
 app.component("base-modal", BaseModal);
 app.component("base-badge", BaseBadge);
+app.component("base-select", BaseSelect);
 
 app.mount("#app");

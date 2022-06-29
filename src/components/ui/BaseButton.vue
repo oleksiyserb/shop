@@ -29,6 +29,7 @@ defineProps<Props>();
 }
 
 a.flat {
+  color: var(--color-text);
   text-decoration: none;
 }
 

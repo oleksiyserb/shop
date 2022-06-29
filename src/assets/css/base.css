@@ -19,11 +19,13 @@
 
   --color-layout: var(--gray);
   --color-layout-secondary: var(--red-primary);
+  --color-layout-tertiary: var(--light);
 
   --color-heading: var(--light);
 
   --color-text: var(--light);
   --color-text-secondary: var(--gray-bg);
+  --color-text-tertiary: var(--light-gray);
   --color-text-warn: var(--red-primary);
 
   --color-link: var(--light);
