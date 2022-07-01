@@ -119,10 +119,6 @@ const handleDelete = (id: string) => {
 
   localStorage.setItem("cartItems", JSON.stringify(products.value));
 };
-
-const handleOrdering = () => {
-  alert("Ordering");
-};
 </script>
 
 <style scoped>

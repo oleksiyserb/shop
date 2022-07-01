@@ -1,28 +1,54 @@
 <template>
   <div class="product">
-    <picture
-      ><img
-        src="https://images.unsplash.com/photo-1447684808650-354ae64db5b8?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=867&q=80"
-        alt="labrador"
-    /></picture>
+    <picture><img :src="picture" alt="labrador" /></picture>
     <div>
       <span>Title</span>
-      <h1>Lorem ipsum dolor sit.</h1>
+      <p>{{ title }}</p>
     </div>
     <div>
       <span>Price</span>
-      <p>234</p>
+      <p>{{ normalizedPrice }}</p>
     </div>
     <div>
       <span>Count</span>
-      <p>2</p>
+      <p>{{ getCountItem }}</p>
     </div>
     <div>
       <span>Total price</span>
-      <p>890</p>
+      <p>{{ totalPrice }}</p>
     </div>
   </div>
 </template>
+
+<script setup lang="ts">
+import { computed } from "@vue/reactivity";
+import { useHelpers } from "@/hooks/useHelpers";
+import { useCartStore } from "@/stores/cart";
+
+const props = defineProps<{
+  id: string;
+  picture: string;
+  title: string;
+  price: number;
+}>();
+
+const { formatedPrice } = useHelpers();
+const cartStore = useCartStore();
+
+const normalizedPrice = computed(() => formatedPrice(props.price));
+
+// Get count items by id from store
+const getCountItem = computed(() => {
+  const currentItem = cartStore.items.find((item) => item.id === props.id);
+
+  return currentItem?.count ? currentItem.count : 0;
+});
+
+const totalPrice = computed(() => {
+  const price = getCountItem.value * props.price;
+  return formatedPrice(price);
+});
+</script>
 
 <style scoped>
 .product {
@@ -59,7 +85,8 @@
   object-fit: cover;
 }
 
-.product > h1 {
-  font-size: 1.125rem;
+.product > div > p {
+  max-width: 200px;
+  margin: 0 auto;
 }
 </style>

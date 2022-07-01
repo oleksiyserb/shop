@@ -28,9 +28,14 @@
 <script setup lang="ts">
 import { watch, computed, ref } from "vue";
 
-defineProps<{
+const props = defineProps<{
   items: object | null;
   filter?: boolean;
+  value: string | null;
+}>();
+
+const emit = defineEmits<{
+  (e: "update:value", item: string): void;
 }>();
 
 const isOpened = ref<boolean>(false);
@@ -44,10 +49,11 @@ const toggleSelect = () => {
 const toggleOption = (id: string, item: string) => {
   selected.value = id;
   selectedText.value = item;
+  emit("update:value", item);
 };
 
 const selectedOption = computed(() =>
-  selectedText.value ? selectedText.value : "Not Selected!"
+  props.value ? props.value : "Not Selected!"
 );
 
 watch(selected, () => {

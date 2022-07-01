@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container" v-if="!success">
     <h1 class="order-heading">Оформлення замовлення</h1>
     <div class="order__wrapper">
       <div class="order__checkout">
@@ -12,24 +12,24 @@
             <div class="order-contacts__group">
               <div>
                 <label for="surname">Прізвище</label>
-                <input type="text" id="surname" />
+                <input type="text" id="surname" v-model.trim="name" />
               </div>
               <div>
                 <label for="name">Ім'я</label>
-                <input type="text" id="name" />
+                <input type="text" id="name" v-model.trim="surname" />
               </div>
             </div>
             <div class="order-contacts__single">
               <label for="parentName">По батькові</label>
-              <input type="text" id="parentName" />
+              <input type="text" id="parentName" v-model.trim="lastName" />
             </div>
             <div class="order-contacts__single">
               <label for="phone">Номер телефону</label>
-              <input type="text" id="phone" />
+              <input type="text" id="phone" v-model.number="phoneNumber" />
             </div>
             <div class="order-contacts__single">
               <label for="email">Пошта</label>
-              <input type="text" id="email" />
+              <input type="text" id="email" v-model.trim="email" />
             </div>
           </div>
         </section>
@@ -40,8 +40,8 @@
           </header>
           <div class="order__body">
             <div class="order-delivery__select">
-              <h2>State:</h2>
-              <base-select :items="states" />
+              <h2>Область:</h2>
+              <base-select v-model:value="selectedState" :items="states" />
             </div>
           </div>
         </section>
@@ -50,11 +50,17 @@
             <span>3</span>
             <p>Товари:</p>
           </header>
-          <base-card class="order__body">
-            <order-item />
-            <order-item />
-            <order-item />
+          <base-card class="order__body" v-if="!isLoading">
+            <order-item
+              v-for="product in products"
+              :key="product.id"
+              :id="product.id"
+              :picture="product.picture"
+              :title="product.title"
+              :price="product.price"
+            />
           </base-card>
+          <base-spinner v-else width="200px" height="200px" fill="#e15b64" />
         </section>
       </div>
       <aside class="order-info">
@@ -63,31 +69,76 @@
             <h1>Разом</h1>
           </header>
           <div class="order-info__price">
-            <span>1 товар на суму:</span>
-            <span>До сплати:</span>
+            <span
+              >До сплати (x{{ cart.items.length }}):
+              <strong>{{ totalPrice }}</strong></span
+            >
           </div>
           <footer class="order-info__actions">
-            <base-button>Оформити замовлення</base-button>
+            <base-button @click="confirmOrder">Оформити замовлення</base-button>
           </footer>
         </base-card>
       </aside>
     </div>
   </div>
+  <div v-else class="success">
+    <h1>Дякуємо за замовлення</h1>
+    <h2>Очікуйте повідомлення про доставку!</h2>
+  </div>
 </template>
 
 <script setup lang="ts">
 import axios, { type AxiosResponse } from "axios";
-import { onBeforeMount, reactive } from "vue";
+import { onBeforeMount, reactive, ref } from "vue";
 import type State from "@/models/api/StateModel";
 import OrderItem from "../../components/order/OrderItem.vue";
+import { useCartStore } from "@/stores/cart";
+import { useRouter } from "vue-router";
+import { useAuth } from "@/hooks/useAuth";
+import { useProduct } from "@/hooks/useProduct";
+import type Product from "@/models/ProductModel";
+import { useHelpers } from "@/hooks/useHelpers";
+import { computed } from "@vue/reactivity";
 
 interface DataState {
   data: Array<State>;
 }
 
 const states: { [key: string]: string } = reactive({});
+const isLoading = ref<boolean>(false);
+const products = ref<Array<Product> | null>(null);
+const name = ref<string | null>("");
+const surname = ref<string>("");
+const lastName = ref<string>("");
+const phoneNumber = ref<string>("");
+const email = ref<string>("");
+const selectedState = ref<string | null>(null);
+const success = ref<boolean>(false);
+
+const { getCurrentUser } = useAuth();
+const { getProductsByIds } = useProduct();
+const cart = useCartStore();
+const router = useRouter();
+const { formatedPrice } = useHelpers();
 
 onBeforeMount(async () => {
+  if (cart.countItems <= 0) {
+    router.replace({ name: "main" });
+  }
+
+  const user = await getCurrentUser();
+  if (user && user.displayName && user.email) {
+    const array = user.displayName.split(" ");
+
+    name.value = array[0];
+    surname.value = array[1];
+    email.value = user.email;
+  }
+
+  isLoading.value = true;
+  products.value = await getProductsByIds(cart.items);
+  isLoading.value = false;
+
   const api: AxiosResponse<DataState> = await axios.post(
     "https://api.novaposhta.ua/v2.0/json/",
     {
@@ -101,6 +152,42 @@ onBeforeMount(async () => {
     states[item.Ref] = item.Description;
   });
 });
+
+const totalPrice = computed(() => {
+  let price = 0;
+  cart.items.forEach((item) => {
+    price += item.count * item.price;
+  });
+
+  return formatedPrice(price);
+});
+
+const confirmOrder = () => {
+  const selectedItems = products.value?.map((product) => {
+    const item = cart.items.find((item) => item.id === product.id);
+
+    return { id: product.id, count: item?.count };
+  });
+
+  const newOrder = {
+    name: name.value,
+    surname: surname.value,
+    lastName: lastName.value,
+    phoneNumber: phoneNumber.value,
+    email: email.value,
+    state: selectedState.value,
+    items: selectedItems,
+  };
+
+  cart.$reset();
+  localStorage.removeItem("cartItems");
+  localStorage.removeItem("cart");
+  success.value = true;
+
+  setTimeout(() => {
+    router.replace({ name: "cabinet" });
+  }, 3000);
+};
 </script>
 
 <style scoped>
@@ -227,5 +314,27 @@ onBeforeMount(async () => {
 
 .order-info__actions > button {
   width: 100%;
+}
+
+.success {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  flex-direction: column;
+}
+
+.success > * {
+  margin: 1rem 0;
+}
+
+.success > h1 {
+  font-size: 4rem;
+  font-weight: 800;
+}
+
+.success > h2 {
+  font-size: 4rem;
+  font-weight: 600;
 }
 </style>
