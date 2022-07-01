@@ -31,7 +31,7 @@ import { watch, computed, ref } from "vue";
 const props = defineProps<{
   items: object | null;
   filter?: boolean;
-  value: string | null;
+  value?: string | null;
 }>();
 
 const emit = defineEmits<{

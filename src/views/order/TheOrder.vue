@@ -1,7 +1,7 @@
 <template>
   <div class="container" v-if="!success">
     <h1 class="order-heading">Оформлення замовлення</h1>
-    <div class="order__wrapper">
+    <form @submit.prevent="submitForm" class="order__wrapper">
       <div class="order__checkout">
         <section class="order-contacts">
           <header class="order-header">
@@ -10,26 +10,61 @@
           </header>
           <div class="order__body order-contacts__body">
             <div class="order-contacts__group">
-              <div>
+              <div class="form-control">
                 <label for="surname">Прізвище</label>
-                <input type="text" id="surname" v-model.trim="name" />
+                <input
+                  type="text"
+                  id="surname"
+                  :value="surname"
+                  @blur="surnameBlur"
+                  @change="surnameChange"
+                />
+                <p v-if="surnameError">{{ surnameError }}</p>
               </div>
-              <div>
+              <div class="form-control">
                 <label for="name">Ім'я</label>
-                <input type="text" id="name" v-model.trim="surname" />
+                <input
+                  type="text"
+                  id="name"
+                  :value="name"
+                  @blur="nameBlur"
+                  @change="nameChange"
+                />
+                <p v-if="nameError">{{ nameError }}</p>
               </div>
             </div>
-            <div class="order-contacts__single">
+            <div class="form-control order-contacts__single">
               <label for="parentName">По батькові</label>
-              <input type="text" id="parentName" v-model.trim="lastName" />
+              <input
+                type="text"
+                id="parentName"
+                :value="lastName"
+                @blur="lastNameBlur"
+                @change="lastNameChange"
+              />
+              <p v-if="lastNameError">{{ lastNameError }}</p>
             </div>
-            <div class="order-contacts__single">
+            <div class="form-control order-contacts__single">
               <label for="phone">Номер телефону</label>
-              <input type="text" id="phone" v-model.number="phoneNumber" />
+              <input
+                type="text"
+                id="phone"
+                :value="phoneNumber"
+                @blur="phoneNumberBlur"
+                @change="phoneNumberChange"
+              />
+              <p v-if="phoneNumberError">{{ phoneNumberError }}</p>
             </div>
-            <div class="order-contacts__single">
+            <div class="form-control order-contacts__single">
               <label for="email">Пошта</label>
-              <input type="text" id="email" v-model.trim="email" />
+              <input
+                type="text"
+                id="email"
+                :value="email"
+                @blur="emailBlur"
+                @change="emailChange"
+              />
+              <p v-if="emailError">{{ emailError }}</p>
             </div>
           </div>
         </section>
@@ -39,9 +74,10 @@
             <p>Доставка:</p>
           </header>
           <div class="order__body">
-            <div class="order-delivery__select">
+            <div class="form-control order-delivery__select">
               <h2>Область:</h2>
-              <base-select v-model:value="selectedState" :items="states" />
+              <base-select v-model:value="state" :items="states" />
+              <p v-if="stateError">{{ stateError }}</p>
             </div>
           </div>
         </section>
@@ -75,11 +111,11 @@
             >
           </div>
           <footer class="order-info__actions">
-            <base-button @click="confirmOrder">Оформити замовлення</base-button>
+            <base-button>Оформити замовлення</base-button>
           </footer>
         </base-card>
       </aside>
-    </div>
+    </form>
   </div>
   <div v-else class="success">
     <h1>Дякуємо за замовлення</h1>
@@ -89,7 +125,7 @@
 
 <script setup lang="ts">
 import axios, { type AxiosResponse } from "axios";
-import { onBeforeMount, reactive, ref } from "vue";
+import { onBeforeMount, reactive, ref, computed } from "vue";
 import type State from "@/models/api/StateModel";
 import OrderItem from "../../components/order/OrderItem.vue";
 import { useCartStore } from "@/stores/cart";
@@ -98,21 +134,60 @@ import { useAuth } from "@/hooks/useAuth";
 import { useProduct } from "@/hooks/useProduct";
 import type Product from "@/models/ProductModel";
 import { useHelpers } from "@/hooks/useHelpers";
-import { computed } from "@vue/reactivity";
+import { object, string } from "yup";
+import { useField, useForm } from "vee-validate";
 
 interface DataState {
   data: Array<State>;
 }
 
+const schema = object({
+  name: string().required().min(2),
+  surname: string().required().min(2),
+  lastName: string().required().min(2),
+  phoneNumber: string().required().min(10).max(10),
+  email: string().required().email(),
+  state: string().required(),
+});
+
+const { handleSubmit } = useForm({
+  validationSchema: schema,
+});
+
 const states: { [key: string]: string } = reactive({});
 const isLoading = ref<boolean>(false);
 const products = ref<Array<Product> | null>(null);
-const name = ref<string | null>("");
-const surname = ref<string>("");
-const lastName = ref<string>("");
-const phoneNumber = ref<string>("");
-const email = ref<string>("");
-const selectedState = ref<string | null>(null);
+const {
+  value: name,
+  errorMessage: nameError,
+  handleBlur: nameBlur,
+  handleChange: nameChange,
+} = useField("name");
+const {
+  value: surname,
+  errorMessage: surnameError,
+  handleBlur: surnameBlur,
+  handleChange: surnameChange,
+} = useField("surname");
+const {
+  value: lastName,
+  errorMessage: lastNameError,
+  handleBlur: lastNameBlur,
+  handleChange: lastNameChange,
+} = useField("lastName");
+const {
+  value: phoneNumber,
+  errorMessage: phoneNumberError,
+  handleBlur: phoneNumberBlur,
+  handleChange: phoneNumberChange,
+} = useField("phoneNumber");
+const {
+  value: email,
+  errorMessage: emailError,
+  handleBlur: emailBlur,
+  handleChange: emailChange,
+} = useField("email");
+const { value: state, errorMessage: stateError } = useField("state");
 const success = ref<boolean>(false);
 
 const { getCurrentUser } = useAuth();
@@ -162,7 +237,7 @@ const totalPrice = computed(() => {
   return formatedPrice(price);
 });
 
-const confirmOrder = () => {
+const submitForm = handleSubmit((values) => {
   const selectedItems = products.value?.map((product) => {
     const item = cart.items.find((item) => item.id === product.id);
 
@@ -170,24 +245,23 @@ const confirmOrder = () => {
   });
 
   const newOrder = {
-    name: name.value,
-    surname: surname.value,
-    lastName: lastName.value,
-    phoneNumber: phoneNumber.value,
-    email: email.value,
-    state: selectedState.value,
+    name: values.name,
+    surname: values.surname,
+    lastName: values.lastName,
+    phoneNumber: values.phoneNumber,
+    email: values.email,
+    state: `${values.state} обл.`,
     items: selectedItems,
   };
-
-  cart.$reset();
-  localStorage.removeItem("cartItems");
-  localStorage.removeItem("cart");
+  // cart.$reset();
+  // localStorage.removeItem("cartItems");
+  // localStorage.removeItem("cart");
   success.value = true;
 
   setTimeout(() => {
     router.replace({ name: "cabinet" });
   }, 3000);
-};
+});
 </script>
 
 <style scoped>
@@ -336,5 +410,10 @@ const confirmOrder = () => {
 .success > h2 {
   font-size: 4rem;
   font-weight: 600;
+}
+
+.form-control > p {
+  margin-top: 0.2em;
+  color: var(--color-text-warn);
 }
 </style>
