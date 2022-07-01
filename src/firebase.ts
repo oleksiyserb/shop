@@ -17,6 +17,7 @@ const db = getFirestore(app);
 
 export const auth = getAuth();
 export const productCollection = collection(db, "products");
+export const orderCollection = collection(db, "orders");
 export const productRef = (id: string) => {
   return doc(db, "products", id);
 };

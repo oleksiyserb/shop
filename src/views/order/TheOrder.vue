@@ -136,6 +136,8 @@ import type Product from "@/models/ProductModel";
 import { useHelpers } from "@/hooks/useHelpers";
 import { object, string } from "yup";
 import { useField, useForm } from "vee-validate";
+import { useOrders } from "@/hooks/useOrders";
+import { useAuthStore } from "@/stores/auth";
 
 interface DataState {
   data: Array<State>;
@@ -193,6 +195,7 @@ const success = ref<boolean>(false);
 const { getCurrentUser } = useAuth();
 const { getProductsByIds } = useProduct();
 const cart = useCartStore();
+const auth = useAuthStore();
 const router = useRouter();
 const { formatedPrice } = useHelpers();
 
@@ -237,7 +240,7 @@ const totalPrice = computed(() => {
   return formatedPrice(price);
 });
 
-const submitForm = handleSubmit((values) => {
+const submitForm = handleSubmit(async (values) => {
   const selectedItems = products.value?.map((product) => {
     const item = cart.items.find((item) => item.id === product.id);
 
@@ -245,17 +248,22 @@ const submitForm = handleSubmit((values) => {
   });
 
   const newOrder = {
+    userId: auth.userId,
     name: values.name,
     surname: values.surname,
     lastName: values.lastName,
     phoneNumber: values.phoneNumber,
     email: values.email,
     state: `${values.state} обл.`,
+    createdAt: new Date().getTime(),
     items: selectedItems,
   };
-  // cart.$reset();
-  // localStorage.removeItem("cartItems");
-  // localStorage.removeItem("cart");
+
+  const { createOrder } = useOrders();
+  await createOrder(newOrder);
+  cart.$reset();
+  localStorage.removeItem("cartItems");
+  localStorage.removeItem("cart");
   success.value = true;
 
   setTimeout(() => {
