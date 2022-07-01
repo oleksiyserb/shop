@@ -197,7 +197,7 @@ const { getProductsByIds } = useProduct();
 const cart = useCartStore();
 const auth = useAuthStore();
 const router = useRouter();
-const { formatedPrice } = useHelpers();
+const { formatedPrice, getDate } = useHelpers();
 
 onBeforeMount(async () => {
   if (cart.countItems <= 0) {
@@ -244,7 +244,13 @@ const submitForm = handleSubmit(async (values) => {
   const selectedItems = products.value?.map((product) => {
     const item = cart.items.find((item) => item.id === product.id);
 
-    return { id: product.id, count: item?.count };
+    return {
+      id: product.id,
+      picture: product.picture,
+      title: product.title,
+      price: product.price,
+      count: item?.count,
+    };
   });
 
   const newOrder = {
@@ -255,7 +261,7 @@ const submitForm = handleSubmit(async (values) => {
     phoneNumber: values.phoneNumber,
     email: values.email,
     state: `${values.state} обл.`,
-    createdAt: new Date().getTime(),
+    createdAt: getDate(),
     items: selectedItems,
   };
 

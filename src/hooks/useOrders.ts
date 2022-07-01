@@ -1,11 +1,22 @@
 import { orderCollection } from "@/firebase";
 import type Order from "@/models/OrderModel";
-import { addDoc } from "@firebase/firestore";
+import { addDoc, getDocs, query, where } from "@firebase/firestore";
 
 export const useOrders = () => {
   const createOrder = async (order: Order) => {
     await addDoc(orderCollection, order);
   };
 
-  return { createOrder };
+  const getOrdersByUserId = async (id: string) => {
+    const orderQuery = query(orderCollection, where("userId", "==", id));
+    const rawOrders = await getDocs(orderQuery);
+
+    const orders = rawOrders.docs.map((order) => {
+      return { id: order.id, ...(order.data() as Order) };
+    });
+
+    return orders;
+  };
+
+  return { createOrder, getOrdersByUserId };
 };

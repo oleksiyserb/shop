@@ -5,11 +5,14 @@ export default interface Order {
   lastName: string | undefined;
   phoneNumber: string | undefined;
   email: string | undefined;
-  createdAt: number;
+  createdAt: string;
   items: Array<Item> | undefined;
 }
 
 interface Item {
   id: string;
+  title: string;
+  picture: string;
+  price: number;
   count: number | undefined;
 }

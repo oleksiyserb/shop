@@ -26,10 +26,11 @@ import { useHelpers } from "@/hooks/useHelpers";
 import { useCartStore } from "@/stores/cart";
 
 const props = defineProps<{
-  id: string;
+  id?: string;
   picture: string;
   title: string;
   price: number;
+  count?: number;
 }>();
 
 const { formatedPrice } = useHelpers();
@@ -41,11 +42,15 @@ const normalizedPrice = computed(() => formatedPrice(props.price));
 const getCountItem = computed(() => {
   const currentItem = cartStore.items.find((item) => item.id === props.id);
 
-  return currentItem?.count ? currentItem.count : 0;
+  if (currentItem) {
+    return currentItem?.count ? currentItem.count : 0;
+  }
+
+  return props.count;
 });
 
 const totalPrice = computed(() => {
-  const price = getCountItem.value * props.price;
+  const price = getCountItem.value! * props.price;
   return formatedPrice(price);
 });
 </script>

@@ -12,18 +12,25 @@
         Your Email: <strong>{{ userEmail }}</strong>
       </p>
     </div>
-    <div class="cabinet__history-payment">
+    <div class="cabinet__history-payment" v-if="orders?.length !== 0">
       <h1>Your history payment:</h1>
       <section class="cabinet__session">
-        <header class="cabinet__header">
-          <h2>29.06.2022</h2>
-        </header>
-        <base-card>
-          <order-item />
-          <order-item />
-          <order-item />
-          <order-item />
-        </base-card>
+        <div v-for="order in orders" :key="order.id">
+          <header class="cabinet__header">
+            <h2>{{ order.createdAt }}</h2>
+          </header>
+          <base-card>
+            <order-item
+              v-for="product in order.items"
+              :key="product.id"
+              :id="product.id"
+              :picture="product.picture"
+              :price="product.price"
+              :count="product.count"
+              :title="product.title"
+            />
+          </base-card>
+        </div>
       </section>
     </div>
   </div>
@@ -31,9 +38,23 @@
 
 <script setup lang="ts">
 import OrderItem from "@/components/order/OrderItem.vue";
+import { ref } from "vue";
+import { useOrders } from "@/hooks/useOrders";
+import type Order from "@/models/OrderModel";
 import { useAuthStore } from "@/stores/auth";
+import { onBeforeMount } from "vue";
 
+interface FullOrder extends Order {
+  id: string;
+}
+
+const orders = ref<Array<FullOrder> | null>(null);
 const { userName, userId, userEmail } = useAuthStore();
+const { getOrdersByUserId } = useOrders();
+
+onBeforeMount(async () => {
+  if (userId) orders.value = await getOrdersByUserId(userId);
+});
 </script>
 
 <style scoped>
@@ -61,8 +82,8 @@ const { userName, userId, userEmail } = useAuthStore();
   margin-top: 1em;
 }
 
-.cabinet__session > .card {
-  border-top-left-radius: 0;
+.cabinet__session > div > .card {
+  border-top-left-radius: 0 !important;
 }
 
 .cabinet__header > h2 {

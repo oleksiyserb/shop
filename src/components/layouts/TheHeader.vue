@@ -4,7 +4,7 @@
       <div class="container">
         <nav>
           <router-link class="header__title" :to="{ name: 'main' }">
-            <h1><span>Dog</span>Shop</h1>
+            <h1><span>Dog</span>Collars</h1>
           </router-link>
           <ul>
             <li>
