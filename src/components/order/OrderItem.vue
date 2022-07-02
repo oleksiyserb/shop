@@ -11,7 +11,7 @@
     </div>
     <div>
       <span>Count</span>
-      <p>{{ getCountItem }}</p>
+      <p>{{ count }}</p>
     </div>
     <div>
       <span>Total price</span>
@@ -23,34 +23,20 @@
 <script setup lang="ts">
 import { computed } from "@vue/reactivity";
 import { useHelpers } from "@/hooks/useHelpers";
-import { useCartStore } from "@/stores/cart";
 
 const props = defineProps<{
-  id?: string;
   picture: string;
   title: string;
   price: number;
-  count?: number;
+  count: number;
 }>();
 
 const { formatedPrice } = useHelpers();
-const cartStore = useCartStore();
 
 const normalizedPrice = computed(() => formatedPrice(props.price));
 
-// Get count items by id from store
-const getCountItem = computed(() => {
-  const currentItem = cartStore.items.find((item) => item.id === props.id);
-
-  if (currentItem) {
-    return currentItem?.count ? currentItem.count : 0;
-  }
-
-  return props.count;
-});
-
 const totalPrice = computed(() => {
-  const price = getCountItem.value! * props.price;
+  const price = props.count * props.price;
   return formatedPrice(price);
 });
 </script>
@@ -61,6 +47,10 @@ const totalPrice = computed(() => {
   align-items: center;
   overflow: hidden;
   padding: 0.5em 0;
+}
+
+.product > div > p {
+  max-width: 200px;
 }
 
 .product + .product {
@@ -90,6 +80,10 @@ const totalPrice = computed(() => {
   }
   .product > div > p {
     font-size: 0.8rem;
+  }
+
+  .product > div > p {
+    max-width: auto;
   }
 }
 

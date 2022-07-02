@@ -35,7 +35,7 @@
 import StarIcon from "@/components/icons/StarIcon.vue";
 import { ref } from "vue";
 import { useProduct } from "@/hooks/useProduct";
-import type ProductData from "@/models/ProductDataModel";
+import type ProductData from "@/models/product/ProductDataModel";
 import { useRouter } from "vue-router";
 import { useCartStore } from "@/stores/cart";
 

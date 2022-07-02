@@ -40,7 +40,7 @@
 import OrderItem from "@/components/order/OrderItem.vue";
 import { ref } from "vue";
 import { useOrders } from "@/hooks/useOrders";
-import type Order from "@/models/OrderModel";
+import type Order from "@/models/order/OrderModel";
 import { useAuthStore } from "@/stores/auth";
 import { onBeforeMount } from "vue";
 

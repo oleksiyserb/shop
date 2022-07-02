@@ -90,10 +90,10 @@
             <order-item
               v-for="product in products"
               :key="product.id"
-              :id="product.id"
               :picture="product.picture"
               :title="product.title"
               :price="product.price"
+              :count="getCurrentProductCount(product.id)"
             />
           </base-card>
           <base-spinner v-else width="200px" height="200px" fill="#e15b64" />
@@ -134,7 +134,7 @@ import { useCartStore } from "@/stores/cart";
 import { useRouter } from "vue-router";
 import { useAuth } from "@/hooks/useAuth";
 import { useProduct } from "@/hooks/useProduct";
-import type Product from "@/models/ProductModel";
+import type Product from "@/models/product/ProductModel";
 import { useHelpers } from "@/hooks/useHelpers";
 import { object, string } from "yup";
 import { useField, useForm } from "vee-validate";
@@ -241,6 +241,11 @@ const totalPrice = computed(() => {
 
   return formatedPrice(price);
 });
+
+const getCurrentProductCount = (id: string) => {
+  const product = cart.items.find((item) => item.id === id);
+  return product?.count ? product.count : 0;
+};
 
 const submitForm = handleSubmit(async (values) => {
   const selectedItems = products.value?.map((product) => {

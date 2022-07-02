@@ -42,7 +42,7 @@
 
 <script setup lang="ts">
 import { useProduct } from "@/hooks/useProduct";
-import type Product from "@/models/ProductModel";
+import type Product from "@/models/product/ProductModel";
 import CartItem from "@/components/cart/CartItem.vue";
 import { ref, computed } from "@vue/reactivity";
 import { useHelpers } from "@/hooks/useHelpers";
