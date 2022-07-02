@@ -1,4 +1,4 @@
-import { createApp } from "vue";
+import { createApp, defineAsyncComponent } from "vue";
 import { createPinia } from "pinia";
 
 import App from "./App.vue";
@@ -6,10 +6,18 @@ import router from "./router";
 
 import BaseButton from "./components/ui/BaseButton.vue";
 import BaseCard from "./components/ui/BaseCard.vue";
-import BaseSpinner from "./components/ui/BaseSpinner.vue";
-import BaseModal from "./components/ui/BaseModal.vue";
-import BaseBadge from "./components/ui/BaseBadge.vue";
-import BaseSelect from "./components/ui/BaseSelect.vue";
+const BaseSpinner = defineAsyncComponent(
+  () => import("./components/ui/BaseSpinner.vue")
+);
+const BaseModal = defineAsyncComponent(
+  () => import("./components/ui/BaseModal.vue")
+);
+const BaseBadge = defineAsyncComponent(
+  () => import("./components/ui/BaseBadge.vue")
+);
+const BaseSelect = defineAsyncComponent(
+  () => import("./components/ui/BaseSelect.vue")
+);
 
 const app = createApp(App);
 

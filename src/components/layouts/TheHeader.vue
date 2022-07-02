@@ -144,10 +144,6 @@ li {
 }
 
 .header__title > h1 > span {
-  transition: color 0.3s;
-}
-
-.header__title:hover > h1 > span {
   color: var(--color-link-active);
 }
 

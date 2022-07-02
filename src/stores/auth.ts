@@ -1,7 +1,7 @@
 import { useAuth } from "@/hooks/useAuth";
 import type Auth from "@/models/AuthModel";
-import type CurrentUser from "@/models/CurrentUserModel";
-import type User from "@/models/UserModel";
+import type CurrentUser from "@/models/user/CurrentUserModel";
+import type User from "@/models/user/UserModel";
 import { defineStore } from "pinia";
 
 export const useAuthStore = defineStore({

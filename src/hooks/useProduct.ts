@@ -9,9 +9,9 @@ import {
 } from "@firebase/firestore";
 import { productCollection, productRef } from "@/firebase";
 import { useHelpers } from "./useHelpers";
-import type Product from "@/models/ProductModel";
-import type ProductData from "@/models/ProductDataModel";
-import type Items from "@/models/ItemsModel";
+import type Product from "@/models/product/ProductModel";
+import type ProductData from "@/models/product/ProductDataModel";
+import type Items from "@/models/cart/ItemsModel";
 import type Types from "@/models/TypesModel";
 
 let errorCode: string;

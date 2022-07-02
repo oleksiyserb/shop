@@ -7,7 +7,7 @@ import {
   type UserCredential,
 } from "@firebase/auth";
 import { auth } from "@/firebase";
-import type User from "@/models/UserModel";
+import type User from "@/models/user/UserModel";
 import { checkError } from "./useCheckError";
 import { ref } from "@vue/reactivity";
 

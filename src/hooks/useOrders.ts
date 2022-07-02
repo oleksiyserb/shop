@@ -1,5 +1,5 @@
 import { orderCollection } from "@/firebase";
-import type Order from "@/models/OrderModel";
+import type Order from "@/models/order/OrderModel";
 import { addDoc, getDocs, query, where } from "@firebase/firestore";
 
 export const useOrders = () => {
