@@ -74,6 +74,7 @@ const totalPrice = computed(() => {
 .product > div {
   text-align: center;
   flex-grow: 1;
+  margin: 0 0.5em;
 }
 
 .product > div > span {
@@ -83,15 +84,19 @@ const totalPrice = computed(() => {
   display: inline-block;
 }
 
+@media (max-width: 425px) {
+  .product > div > span {
+    font-size: 0.5rem;
+  }
+  .product > div > p {
+    font-size: 0.8rem;
+  }
+}
+
 .product > picture > img {
   display: block;
   width: 80px;
   height: 80px;
   object-fit: cover;
-}
-
-.product > div > p {
-  max-width: 200px;
-  margin: 0 auto;
 }
 </style>

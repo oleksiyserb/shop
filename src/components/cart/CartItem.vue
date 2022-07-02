@@ -57,6 +57,32 @@ const fullPrice = computed(() => {
   position: relative;
 }
 
+@media (max-width: 425px) {
+  .cart__item {
+    margin: 0;
+    padding: var(--section-gap) 0;
+    display: block;
+  }
+
+  .cart__item + .cart__item {
+    border-top: 1px solid var(--color-border);
+  }
+
+  .cart__item > button {
+    padding-top: 1em;
+  }
+
+  .cart__item > picture {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1em;
+  }
+
+  .cart__item-details {
+    margin-top: 0.5em;
+  }
+}
+
 .cart__item > button {
   position: absolute;
   right: 1em;
@@ -95,6 +121,12 @@ picture > img {
 
 .cart__item-content > p {
   line-height: 1.2;
+}
+
+@media (max-width: 425px) {
+  .cart__item-content {
+    margin: 0;
+  }
 }
 
 .cart__item-details {

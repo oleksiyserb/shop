@@ -1,5 +1,5 @@
 <template>
-  <div class="container" v-if="!success">
+  <div class="container" v-if="success">
     <h1 class="order-heading">Оформлення замовлення</h1>
     <form @submit.prevent="submitForm" class="order__wrapper">
       <div class="order__checkout">
@@ -118,8 +118,10 @@
     </form>
   </div>
   <div v-else class="success">
-    <h1>Дякуємо за замовлення</h1>
-    <h2>Очікуйте повідомлення про доставку!</h2>
+    <div class="container">
+      <h1 class="success__title">Дякуємо за замовлення</h1>
+      <h2 class="success__message">Очікуйте повідомлення про доставку!</h2>
+    </div>
   </div>
 </template>
 
@@ -286,6 +288,12 @@ const submitForm = handleSubmit(async (values) => {
   margin-bottom: 1em;
 }
 
+@media (max-width: 425px) {
+  .order-heading {
+    font-size: 1.875rem;
+  }
+}
+
 .order__checkout > section {
   margin: 1em 0;
 }
@@ -309,6 +317,12 @@ const submitForm = handleSubmit(async (values) => {
 
 .order__body {
   margin: 0.5em 0 0 2em;
+}
+
+@media (max-width: 425px) {
+  .order__body {
+    margin: 0.5em 0 0 0;
+  }
 }
 
 .order-contacts__single {
@@ -343,6 +357,17 @@ const submitForm = handleSubmit(async (values) => {
   flex-grow: 1;
 }
 
+@media (max-width: 425px) {
+  .order-contacts__group {
+    display: block;
+    margin: 0;
+  }
+
+  .order-contacts__group > div {
+    margin: 0.5em 0;
+  }
+}
+
 .order-delivery__select {
   margin: 1em 0;
 }
@@ -364,6 +389,16 @@ const submitForm = handleSubmit(async (values) => {
 
 .order__wrapper > aside {
   grid-column: span 4;
+}
+
+@media (max-width: 768px) {
+  .order__wrapper > div {
+    grid-column: span 12;
+  }
+
+  .order__wrapper > aside {
+    grid-column: span 12;
+  }
 }
 
 .order-info__header {
@@ -412,18 +447,30 @@ const submitForm = handleSubmit(async (values) => {
   flex-direction: column;
 }
 
-.success > * {
+.success > .container > * {
   margin: 1rem 0;
 }
 
-.success > h1 {
+.success__title {
+  text-align: center;
   font-size: 4rem;
   font-weight: 800;
 }
 
-.success > h2 {
-  font-size: 4rem;
+.success__message {
+  text-align: center;
+  font-size: 3rem;
   font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .success__title {
+    font-size: 2rem;
+  }
+
+  .success__message {
+    font-size: 1.5rem;
+  }
 }
 
 .form-control > p {

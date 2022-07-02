@@ -64,7 +64,8 @@ watch(selected, () => {
 <style scoped>
 .select {
   position: relative;
-  width: 20em;
+  width: 100%;
+  max-width: 20rem;
   display: inline-block;
   user-select: none;
 }

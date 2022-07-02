@@ -76,6 +76,12 @@ picture {
   grid-column: span 4;
 }
 
+@media (max-width: 425px) {
+  picture {
+    grid-column: span 12;
+  }
+}
+
 picture > img {
   width: 100%;
   height: 350px;
@@ -87,6 +93,12 @@ picture > img {
   grid-column: span 8;
   display: grid;
   grid-template-rows: auto 1fr auto;
+}
+
+@media (max-width: 425px) {
+  .product__details {
+    grid-column: span 12;
+  }
 }
 
 header {
