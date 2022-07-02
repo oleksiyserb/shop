@@ -12,6 +12,11 @@
               <span></span>
             </label>
             <ul class="burger__menubox">
+              <li class="burger__heading">
+                <router-link class="header__title" :to="{ name: 'main' }">
+                  <h1><span>Dog</span>Collars</h1>
+                </router-link>
+              </li>
               <li>
                 <router-link class="link" :to="{ name: 'main' }"
                   >Our Products</router-link
@@ -159,6 +164,10 @@ button > * {
   display: none;
 }
 
+.burger__heading {
+  display: none;
+}
+
 @media (max-width: 768px) {
   .burger > input {
     display: inline-block;
@@ -195,6 +204,10 @@ button > * {
     top: 8px;
   }
 
+  .burger__heading {
+    display: block;
+  }
+
   .burger__menubox {
     display: block;
     position: fixed;
@@ -204,7 +217,7 @@ button > * {
     width: 50%;
     height: 100%;
     margin: 0;
-    padding: 3em 0;
+    padding: 1.5em 0;
     list-style: none;
     background-color: var(--color-layout);
     box-shadow: 1px 0px 6px rgba(0, 0, 0, 0.2);
@@ -212,10 +225,10 @@ button > * {
   }
 
   .burger__menubox li {
-    margin-top: 1.5em;
+    margin: 1rem 0.5rem;
   }
 
-  .link__cart {
+  .burger__menubox > li > a {
     display: inline-block;
   }
 

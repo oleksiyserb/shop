@@ -1,5 +1,5 @@
 <template>
-  <div class="container" v-if="success">
+  <div class="container" v-if="!success">
     <h1 class="order-heading">Оформлення замовлення</h1>
     <form @submit.prevent="submitForm" class="order__wrapper">
       <div class="order__checkout">
