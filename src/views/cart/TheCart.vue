@@ -6,7 +6,7 @@
           <h1>Cart Items: ({{ countItems }})</h1>
         </header>
         <div class="cart__items">
-          <template v-if="!isLoading && products?.length !== 0">
+          <template v-if="!isLoading && countItems !== 0">
             <cart-item
               v-for="product in products"
               :key="product.id"
