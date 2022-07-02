@@ -6,7 +6,7 @@
           <h1>Cart Items: ({{ countItems }})</h1>
         </header>
         <div class="cart__items">
-          <template v-if="!isLoading && products !== null">
+          <template v-if="!isLoading && products?.length !== 0">
             <cart-item
               v-for="product in products"
               :key="product.id"
@@ -21,7 +21,7 @@
               @decrement="decrement"
             />
           </template>
-          <h1 class="empty-cart" v-else-if="isError || countItems <= 0">
+          <h1 class="empty-cart" v-else-if="isError || countItems === 0">
             Cart is empty
             <router-link :to="{ name: 'main' }">go back</router-link>
           </h1>
