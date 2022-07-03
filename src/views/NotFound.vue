@@ -1,12 +1,18 @@
 <template>
   <div class="not-found">
-    <h1>Ops...</h1>
-    <h2>404 - Page Not Found!</h2>
-    <base-button :to="{ name: 'main' }" link
-      >Maybe you want search some products?</base-button
-    >
+    <h1>{{ t("notFound.ops") }}</h1>
+    <h2>{{ t("notFound.error") }}</h2>
+    <base-button :to="{ name: 'main' }" link>{{
+      t("notFound.message")
+    }}</base-button>
   </div>
 </template>
+
+<script setup lang="ts">
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
+</script>
 
 <style scoped>
 .not-found {

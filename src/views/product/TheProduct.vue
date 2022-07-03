@@ -22,7 +22,9 @@
               </ul>
             </div>
             <footer class="product__actions">
-              <base-button @click="addToCart">Add To Cart</base-button>
+              <base-button @click="addToCart">{{
+                t("action.addToCart")
+              }}</base-button>
             </footer>
           </div>
         </div>
@@ -38,6 +40,7 @@ import { useProduct } from "@/hooks/useProduct";
 import type ProductData from "@/models/product/ProductDataModel";
 import { useRouter } from "vue-router";
 import { useCartStore } from "@/stores/cart";
+import { useI18n } from "vue-i18n";
 
 const props = defineProps<{
   id: string;
@@ -46,6 +49,7 @@ const product = ref<ProductData | null>(null);
 const { getCurrentProduct } = useProduct();
 const { replace } = useRouter();
 const cartStore = useCartStore();
+const { t } = useI18n();
 
 (async () => {
   product.value = await getCurrentProduct(props.id);

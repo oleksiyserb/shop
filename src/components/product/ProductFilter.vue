@@ -2,11 +2,11 @@
   <aside class="product__filters">
     <base-card>
       <header>
-        <h1>Some filters:</h1>
+        <h1>{{ t("filter.title") }}:</h1>
       </header>
       <div class="product__actions">
         <div class="product__actions-item">
-          <h3>Types:</h3>
+          <h3>{{ t("filter.types") }}:</h3>
           <ul class="product__type">
             <li>
               <input
@@ -15,11 +15,11 @@
                 checked
                 @change="typeChanged"
               />
-              <label for="canvas">Canvas</label>
+              <label for="canvas">{{ t("filter.canvas") }}</label>
             </li>
             <li>
               <input id="sport" type="checkbox" checked @change="typeChanged" />
-              <label for="sport">Sport</label>
+              <label for="sport">{{ t("filter.sport") }}</label>
             </li>
             <li>
               <input
@@ -28,7 +28,9 @@
                 checked
                 @change="typeChanged"
               />
-              <label for="waterRepellent">Water-repellent</label>
+              <label for="waterRepellent">{{
+                t("filter.waterRepellent")
+              }}</label>
             </li>
           </ul>
         </div>
@@ -40,6 +42,7 @@
 <script setup lang="ts">
 import { ref } from "@vue/reactivity";
 import type Types from "@/models/TypesModel";
+import { useI18n } from "vue-i18n";
 
 const emit = defineEmits<{
   (e: "change-type", updatedTypes: Types): void;
@@ -50,6 +53,8 @@ const types = ref<Types>({
   sport: true,
   waterRepellent: true,
 });
+
+const { t } = useI18n();
 
 const typeChanged = (e: any) => {
   const inputId = e.target.id;

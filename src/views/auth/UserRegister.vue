@@ -8,15 +8,18 @@
         <div class="auth__wrapper">
           <base-card>
             <header class="auth__header">
-              <h1>Register your account</h1>
-              <span
-                >Or <router-link :to="{ name: 'login' }">Log In</router-link> in
-                your account.</span
-              >
+              <h1>{{ t("register.title") }}</h1>
+              <span>
+                {{ t("register.paragraph.or") }}
+                <router-link :to="{ name: 'login' }">{{
+                  t("register.paragraph.logIn")
+                }}</router-link>
+                {{ t("register.paragraph.description") }}
+              </span>
             </header>
             <form @submit.prevent="onSubmit" class="auth__form">
               <div class="auth__form-control">
-                <label for="name">Enter your name</label>
+                <label for="name">{{ t("auth.name") }}</label>
                 <input
                   type="text"
                   name="name"
@@ -28,7 +31,7 @@
                 <span>{{ nameError }}</span>
               </div>
               <div class="auth__form-control">
-                <label for="surname">Enter your surname</label>
+                <label for="surname">{{ t("auth.surname") }}</label>
                 <input
                   type="text"
                   name="surname"
@@ -40,7 +43,7 @@
                 <span>{{ surnameError }}</span>
               </div>
               <div class="auth__form-control">
-                <label for="email">Enter your email</label>
+                <label for="email">{{ t("auth.email") }}</label>
                 <input
                   type="email"
                   name="email"
@@ -52,7 +55,7 @@
                 <span>{{ emailError }}</span>
               </div>
               <div class="auth__form-control">
-                <label for="password">Enter your password</label>
+                <label for="password">{{ t("auth.password") }}</label>
                 <input
                   name="password"
                   type="password"
@@ -64,7 +67,7 @@
                 <span>{{ passwordError }}</span>
               </div>
               <base-button>
-                <span v-if="!isLoading">Sign Up</span>
+                <span v-if="!isLoading">{{ t("action.signUp") }}</span>
                 <base-spinner
                   v-else
                   width="60px"
@@ -86,8 +89,11 @@ import { useAuthForm } from "../../hooks/useAuthForm";
 import type Auth from "@/models/AuthModel";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "@/stores/auth";
+import { useI18n } from "vue-i18n";
 
 const { replace } = useRouter();
+const { t } = useI18n();
+
 const isLoading = ref<boolean>(false);
 const authStore = useAuthStore();
 const errorMessage = ref<string | null>(null);

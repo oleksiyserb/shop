@@ -8,16 +8,18 @@
         <div class="auth__wrapper">
           <base-card>
             <header class="auth__header">
-              <h1>Log In</h1>
-              <span
-                >Or
-                <router-link :to="{ name: 'register' }">Register</router-link> a
-                new account.</span
-              >
+              <h1>{{ t("login.title") }}</h1>
+              <span>
+                {{ t("login.paragraph.or") }}
+                <router-link :to="{ name: 'register' }">{{
+                  t("login.paragraph.signUp")
+                }}</router-link>
+                {{ t("login.paragraph.description") }}
+              </span>
             </header>
             <form class="auth__form" @submit.prevent="onSubmit">
               <div class="auth__form-control">
-                <label for="email">Enter your email</label>
+                <label for="email">{{ t("auth.email") }}</label>
                 <input
                   type="email"
                   id="email"
@@ -28,7 +30,7 @@
                 <span>{{ emailError }}</span>
               </div>
               <div class="auth__form-control">
-                <label for="password">Enter your password</label>
+                <label for="password">{{ t("auth.password") }}</label>
                 <input
                   type="password"
                   id="password"
@@ -39,7 +41,7 @@
                 <span>{{ passwordError }}</span>
               </div>
               <base-button>
-                <span v-if="!isLoading">Sign In</span>
+                <span v-if="!isLoading">{{ t("action.signIn") }}</span>
                 <base-spinner
                   v-else
                   width="60px"
@@ -61,9 +63,12 @@ import type Auth from "@/models/AuthModel";
 import { useAuthForm } from "../../hooks/useAuthForm";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "@/stores/auth";
+import { useI18n } from "vue-i18n";
 
 const authStore = useAuthStore();
 const { replace } = useRouter();
+const { t } = useI18n();
+
 const isLoading = ref<boolean>(false);
 const errorMessage = ref<string | null>(null);
 

@@ -2,19 +2,19 @@
   <div class="product">
     <picture><img :src="picture" alt="labrador" /></picture>
     <div>
-      <span>Title</span>
+      <span>{{ t("orderItem.title") }}</span>
       <p>{{ title }}</p>
     </div>
     <div>
-      <span>Price</span>
+      <span>{{ t("orderItem.price") }}</span>
       <p>{{ normalizedPrice }}</p>
     </div>
     <div>
-      <span>Count</span>
+      <span>{{ t("orderItem.count") }}</span>
       <p>{{ count }}</p>
     </div>
     <div>
-      <span>Total price</span>
+      <span>{{ t("orderItem.totalPrice") }}</span>
       <p>{{ totalPrice }}</p>
     </div>
   </div>
@@ -23,20 +23,22 @@
 <script setup lang="ts">
 import { computed } from "@vue/reactivity";
 import { useHelpers } from "@/hooks/useHelpers";
+import { useI18n } from "vue-i18n";
 
 const props = defineProps<{
   picture: string;
   title: string;
   price: number;
-  count: number;
+  count: number | undefined;
 }>();
 
 const { formatedPrice } = useHelpers();
+const { t } = useI18n();
 
 const normalizedPrice = computed(() => formatedPrice(props.price));
 
 const totalPrice = computed(() => {
-  const price = props.count * props.price;
+  const price = (props.count || 0) * props.price;
   return formatedPrice(price);
 });
 </script>
@@ -51,6 +53,7 @@ const totalPrice = computed(() => {
 
 .product > div > p {
   max-width: 200px;
+  margin: 0 auto;
 }
 
 .product + .product {

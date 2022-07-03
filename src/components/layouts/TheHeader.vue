@@ -18,29 +18,42 @@
                 </router-link>
               </li>
               <li>
-                <router-link class="link" :to="{ name: 'main' }"
-                  >Our Products</router-link
-                >
+                <router-link class="link" :to="{ name: 'main' }">{{
+                  t("header.ourProducts")
+                }}</router-link>
               </li>
               <template v-if="authStore.isLogin">
                 <li>
-                  <router-link class="link" :to="{ name: 'cabinet' }"
-                    >Cabinet</router-link
-                  >
+                  <router-link class="link" :to="{ name: 'cabinet' }">{{
+                    t("header.cabinet")
+                  }}</router-link>
                 </li>
                 <li>
-                  <base-button @click="signOut">Sign Out</base-button>
+                  <base-button @click="signOut">{{
+                    t("action.signOut")
+                  }}</base-button>
                 </li>
               </template>
               <li v-else>
-                <base-button :to="{ name: 'register' }" link
-                  >Sign Up</base-button
-                >
+                <base-button :to="{ name: 'register' }" link>{{
+                  t("action.signUp")
+                }}</base-button>
               </li>
               <li>
                 <base-button class="link__cart" :to="{ name: 'cart' }" link>
-                  <shoping-cart /> <span>Cart</span> ({{ countItems }})
+                  <shoping-cart /> <span>{{ t("header.cart") }}</span> ({{
+                    countItems
+                  }})
                 </base-button>
+              </li>
+              <li>
+                <select
+                  :value="locale"
+                  @input="emit('update:locale', $event.target.value)"
+                >
+                  <option value="ua">Ua</option>
+                  <option value="en">En</option>
+                </select>
               </li>
             </ul>
           </div>
@@ -57,12 +70,20 @@ import { useCartStore } from "@/stores/cart";
 import { useRoute, useRouter } from "vue-router";
 import { computed } from "@vue/reactivity";
 import { watch, ref, type InputHTMLAttributes } from "vue";
+import { useI18n } from "vue-i18n";
 
 const authStore = useAuthStore();
 const cartStore = useCartStore();
 const router = useRouter();
 const route = useRoute();
+const { t } = useI18n();
 
+defineProps<{
+  locale: string;
+}>();
+const emit = defineEmits<{
+  (e: "update:locale", value: string): void;
+}>();
 const burgerToggle = ref<InputHTMLAttributes | null>(null);
 
 const countItems = computed(() => cartStore.countItems);

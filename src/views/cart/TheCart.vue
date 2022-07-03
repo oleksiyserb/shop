@@ -3,7 +3,7 @@
     <div class="container">
       <base-card>
         <header class="cart__header">
-          <h1>Cart Items: ({{ countItems }})</h1>
+          <h1>{{ t("cart.cartItems", { count: countItems }) }}</h1>
         </header>
         <div class="cart__items">
           <template v-if="!isLoading && countItems !== 0">
@@ -22,18 +22,18 @@
             />
           </template>
           <h1 class="empty-cart" v-else-if="isError || countItems === 0">
-            Cart is empty
-            <router-link :to="{ name: 'main' }">go back</router-link>
+            {{ t("cart.empty") }}
+            <router-link :to="{ name: 'main' }">{{
+              t("cart.goBack")
+            }}</router-link>
           </h1>
           <base-spinner v-else width="200px" height="200px" fill="#e15b64" />
         </div>
         <div class="cart__actions">
-          <base-button :to="{ name: 'ordering' }" v-if="countItems > 0" link
-            >Ordering</base-button
-          >
-          <span
-            >Total Price: <strong>{{ totalPrice }}</strong></span
-          >
+          <base-button :to="{ name: 'ordering' }" v-if="countItems > 0" link>{{
+            t("action.ordering")
+          }}</base-button>
+          <span v-html="t('cart.totalPrice', { totalPrice })"></span>
         </div>
       </base-card>
     </div>
@@ -47,9 +47,12 @@ import CartItem from "@/components/cart/CartItem.vue";
 import { ref, computed } from "@vue/reactivity";
 import { useHelpers } from "@/hooks/useHelpers";
 import { useCartStore } from "@/stores/cart";
+import { useI18n } from "vue-i18n";
 
 const { formatedPrice } = useHelpers();
 const { getProductsByIds } = useProduct();
+const { t } = useI18n();
+
 const cartStore = useCartStore();
 const products = ref<Array<Product> | null>(null);
 const isError = ref<boolean>(false);

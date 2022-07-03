@@ -27,6 +27,7 @@
 
 <script setup lang="ts">
 import { watch, computed, ref } from "vue";
+import { useI18n } from "vue-i18n";
 
 const props = defineProps<{
   items: object | null;
@@ -37,6 +38,8 @@ const props = defineProps<{
 const emit = defineEmits<{
   (e: "update:value", item: string): void;
 }>();
+
+const { t } = useI18n();
 
 const isOpened = ref<boolean>(false);
 const selected = ref<string | null>(null);
@@ -53,7 +56,7 @@ const toggleOption = (id: string, item: string) => {
 };
 
 const selectedOption = computed(() =>
-  props.value ? props.value : "Not Selected!"
+  props.value ? props.value : t("order.delivery.notSelected")
 );
 
 watch(selected, () => {

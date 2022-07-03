@@ -1,20 +1,20 @@
 <template>
   <div class="container">
     <div class="cabinet__profile">
-      <h1>Welcome {{ userName }}!</h1>
+      <h1>{{ t("cabinet.welcome") }}{{ userName }}!</h1>
       <p>
-        Your id: <strong>{{ userId }}</strong>
+        {{ t("cabinet.yourId") }}<strong>{{ userId }}</strong>
       </p>
       <p>
-        Your Name: <strong>{{ userName }}</strong>
+        {{ t("cabinet.yourName") }}<strong>{{ userName }}</strong>
       </p>
       <p>
-        Your Email: <strong>{{ userEmail }}</strong>
+        {{ t("cabinet.yourEmail") }}<strong>{{ userEmail }}</strong>
       </p>
     </div>
     <div class="cabinet__history-payment" v-if="orders?.length !== 0">
-      <h1>Your history payment:</h1>
-      <section class="cabinet__session">
+      <h1>{{ t("cabinet.yourHistory") }}</h1>
+      <section class="cabinet__session" v-if="!isLoading">
         <div v-for="order in orders" :key="order.id">
           <header class="cabinet__header">
             <h2>{{ order.createdAt }}</h2>
@@ -32,6 +32,7 @@
           </base-card>
         </div>
       </section>
+      <base-spinner v-else width="200px" height="200px" fill="#e15b64" />
     </div>
   </div>
 </template>
@@ -43,17 +44,22 @@ import { useOrders } from "@/hooks/useOrders";
 import type Order from "@/models/order/OrderModel";
 import { useAuthStore } from "@/stores/auth";
 import { onBeforeMount } from "vue";
+import { useI18n } from "vue-i18n";
 
 interface FullOrder extends Order {
   id: string;
 }
 
 const orders = ref<Array<FullOrder> | null>(null);
+const isLoading = ref<boolean>(false);
+const { t } = useI18n();
 const { userName, userId, userEmail } = useAuthStore();
 const { getOrdersByUserId } = useOrders();
 
 onBeforeMount(async () => {
+  isLoading.value = true;
   if (userId) orders.value = await getOrdersByUserId(userId);
+  isLoading.value = false;
 });
 </script>
 

@@ -22,7 +22,9 @@
         </div>
         <div class="product__actions">
           <strong>{{ formatedPrice(price) }}</strong>
-          <base-button @click="addToCart">Add To Cart</base-button>
+          <base-button @click="addToCart">{{
+            t("action.addToCart")
+          }}</base-button>
         </div>
       </div>
     </base-card>
@@ -33,6 +35,7 @@
 import { useHelpers } from "@/hooks/useHelpers";
 import { useCartStore } from "@/stores/cart";
 import StarIcon from "../icons/StarIcon.vue";
+import { useI18n } from "vue-i18n";
 interface Product {
   id: string;
   title: string;
@@ -43,6 +46,7 @@ interface Product {
   type: string;
 }
 
+const { t } = useI18n();
 const props = defineProps<Product>();
 const cartStore = useCartStore();
 

@@ -1,5 +1,5 @@
 <template>
-  <the-header />
+  <the-header v-model:locale="locale" />
   <main>
     <router-view v-slot="{ Component }">
       <transition name="fade" mode="out-in">
@@ -13,6 +13,7 @@
 <script setup lang="ts">
 import TheHeader from "./components/layouts/TheHeader.vue";
 import TheFooter from "./components/layouts/TheFooter.vue";
+import { useI18n } from "vue-i18n";
 import { useAuth } from "./hooks/useAuth";
 import { onBeforeMount } from "vue";
 import { useAuthStore } from "./stores/auth";
@@ -23,6 +24,7 @@ const authStore = useAuthStore();
 const cartStore = useCartStore();
 
 cartStore.initializeCart();
+const { locale } = useI18n();
 
 onBeforeMount(async () => {
   const user = await getCurrentUser();

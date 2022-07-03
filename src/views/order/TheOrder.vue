@@ -1,17 +1,17 @@
 <template>
   <div class="container" v-if="!success">
-    <h1 class="order-heading">Оформлення замовлення</h1>
+    <h1 class="order-heading">{{ t("order.title") }}</h1>
     <form @submit.prevent="submitForm" class="order__wrapper">
       <div class="order__checkout">
         <section class="order-contacts">
           <header class="order-header">
             <span>1</span>
-            <p>Ваші контактні дані:</p>
+            <p>{{ t("order.contacts.title") }}</p>
           </header>
           <div class="order__body order-contacts__body">
             <div class="order-contacts__group">
               <div class="form-control">
-                <label for="surname">Прізвище</label>
+                <label for="surname">{{ t("order.contacts.surname") }}</label>
                 <input
                   type="text"
                   id="surname"
@@ -22,7 +22,7 @@
                 <p v-if="surnameError">{{ surnameError }}</p>
               </div>
               <div class="form-control">
-                <label for="name">Ім'я</label>
+                <label for="name">{{ t("order.contacts.name") }}</label>
                 <input
                   type="text"
                   id="name"
@@ -34,7 +34,7 @@
               </div>
             </div>
             <div class="form-control order-contacts__single">
-              <label for="parentName">По батькові</label>
+              <label for="parentName">{{ t("order.contacts.lastName") }}</label>
               <input
                 type="text"
                 id="parentName"
@@ -45,7 +45,7 @@
               <p v-if="lastNameError">{{ lastNameError }}</p>
             </div>
             <div class="form-control order-contacts__single">
-              <label for="phone">Номер телефону</label>
+              <label for="phone">{{ t("order.contacts.phoneNumber") }}</label>
               <input
                 type="text"
                 id="phone"
@@ -56,7 +56,7 @@
               <p v-if="phoneNumberError">{{ phoneNumberError }}</p>
             </div>
             <div class="form-control order-contacts__single">
-              <label for="email">Пошта</label>
+              <label for="email">{{ t("order.contacts.email") }}</label>
               <input
                 type="text"
                 id="email"
@@ -71,11 +71,11 @@
         <section class="order-delivery">
           <header class="order-header">
             <span>2</span>
-            <p>Доставка:</p>
+            <p>{{ t("order.delivery.title") }}</p>
           </header>
           <div class="order__body">
             <div class="form-control order-delivery__select">
-              <h2>Область:</h2>
+              <h2>{{ t("order.delivery.state") }}</h2>
               <base-select v-model:value="state" :items="states" />
               <p v-if="stateError">{{ stateError }}</p>
             </div>
@@ -84,7 +84,7 @@
         <section class="order-product">
           <header class="order-header">
             <span>3</span>
-            <p>Товари:</p>
+            <p>{{ t("order.products") }}</p>
           </header>
           <base-card class="order__body" v-if="!isLoading">
             <order-item
@@ -102,16 +102,16 @@
       <aside class="order-info">
         <base-card>
           <header class="order-info__header">
-            <h1>Разом</h1>
+            <h1>{{ t("order.aside.title") }}</h1>
           </header>
           <div class="order-info__price">
             <span
-              >До сплати (x{{ cart.items.length }}):
+              >{{ t("order.aside.toPay") }} (x{{ cart.items.length }}):
               <strong>{{ totalPrice }}</strong></span
             >
           </div>
           <footer class="order-info__actions">
-            <base-button>Оформити замовлення</base-button>
+            <base-button>{{ t("order.aside.button") }}</base-button>
           </footer>
         </base-card>
       </aside>
@@ -119,8 +119,8 @@
   </div>
   <div v-else class="success">
     <div class="container">
-      <h1 class="success__title">Дякуємо за замовлення</h1>
-      <h2 class="success__message">Очікуйте повідомлення про доставку!</h2>
+      <h1 class="success__title">{{ t("order.success.title") }}</h1>
+      <h2 class="success__message">{{ t("order.success.subtitle") }}</h2>
     </div>
   </div>
 </template>
@@ -140,6 +140,7 @@ import { object, string } from "yup";
 import { useField, useForm } from "vee-validate";
 import { useOrders } from "@/hooks/useOrders";
 import { useAuthStore } from "@/stores/auth";
+import { useI18n } from "vue-i18n";
 
 interface DataState {
   data: Array<State>;
@@ -200,6 +201,7 @@ const cart = useCartStore();
 const auth = useAuthStore();
 const router = useRouter();
 const { formatedPrice, getDate } = useHelpers();
+const { t } = useI18n();
 
 onBeforeMount(async () => {
   if (cart.countItems <= 0) {
