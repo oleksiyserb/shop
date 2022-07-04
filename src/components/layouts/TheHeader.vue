@@ -47,13 +47,7 @@
                 </base-button>
               </li>
               <li>
-                <select
-                  :value="locale"
-                  @input="emit('update:locale', $event.target.value)"
-                >
-                  <option value="ua">Ua</option>
-                  <option value="en">En</option>
-                </select>
+                <base-select v-model:value="locale" :items="locales" />
               </li>
             </ul>
           </div>
@@ -69,22 +63,20 @@ import { useAuthStore } from "@/stores/auth";
 import { useCartStore } from "@/stores/cart";
 import { useRoute, useRouter } from "vue-router";
 import { computed } from "@vue/reactivity";
-import { watch, ref, type InputHTMLAttributes } from "vue";
+import { watch, ref, reactive, type InputHTMLAttributes } from "vue";
 import { useI18n } from "vue-i18n";
 
 const authStore = useAuthStore();
 const cartStore = useCartStore();
 const router = useRouter();
 const route = useRoute();
-const { t } = useI18n();
+const { t, locale } = useI18n();
 
-defineProps<{
-  locale: string;
-}>();
-const emit = defineEmits<{
-  (e: "update:locale", value: string): void;
-}>();
 const burgerToggle = ref<InputHTMLAttributes | null>(null);
+const locales = reactive({
+  0: "ua",
+  1: "en",
+});
 
 const countItems = computed(() => cartStore.countItems);
 

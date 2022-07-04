@@ -18,6 +18,10 @@ export default {
   },
   action: {
     addToCart: "Add to cart",
+    ordering: "Ordering",
+    signUp: "Sign Up",
+    signOut: "Sign Out",
+    signIn: "Sign In",
   },
   cabinet: {
     welcome: "Welcome ",
