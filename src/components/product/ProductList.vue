@@ -25,7 +25,7 @@ import ProductItem from "./ProductItem.vue";
 import { useProduct } from "@/hooks/useProduct";
 import type Types from "@/models/TypesModel";
 import { onBeforeMount, ref, toRefs, watch } from "vue";
-import type Product from "@/models/ProductModel";
+import type Product from "@/models/product/ProductModel";
 import ProductItemSkeleton from "./ProductItemSkeleton.vue";
 
 const products = ref<Array<Product> | null | void>(null);
