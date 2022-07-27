@@ -1,30 +1,14 @@
-<template>
-  <div class="container" v-if="!success">
-    <h1 class="order-heading">{{ t("order.title") }}</h1>
-    <form @submit.prevent="submitForm" class="order__wrapper">
-      <order-checkout />
-      <order-aside :totalPrice="totalPrice" />
-    </form>
-  </div>
-  <div v-else class="success">
-    <div class="container">
-      <h1 class="success__title">{{ t("order.success.title") }}</h1>
-      <h2 class="success__message">{{ t("order.success.subtitle") }}</h2>
-    </div>
-  </div>
-</template>
-
 <script setup lang="ts">
 import OrderCheckout from "@/components/order/OrderCheckout.vue";
 import OrderAside from "@/components/order/OrderAside.vue";
 import { onBeforeMount, ref, computed } from "vue";
-import { useCartStore } from "@/stores/cart";
+import useCartStore from "@/stores/cart";
 import { useRouter } from "vue-router";
-import { useHelpers } from "@/hooks/useHelpers";
+import useHelpers from "@/hooks/useHelpers";
 import { array, object, string } from "yup";
 import { useForm } from "vee-validate";
-import { useOrders } from "@/hooks/useOrders";
-import { useAuthStore } from "@/stores/auth";
+import useOrders from "@/hooks/useOrders";
+import useAuthStore from "@/stores/auth";
 import { useI18n } from "vue-i18n";
 
 const schema = object({
@@ -104,6 +88,22 @@ const submitForm = handleSubmit(async (values) => {
   }, 3000);
 });
 </script>
+
+<template>
+  <div class="container" v-if="!success">
+    <h1 class="order-heading">{{ t("order.title") }}</h1>
+    <form @submit.prevent="submitForm" class="order__wrapper">
+      <order-checkout />
+      <order-aside :totalPrice="totalPrice" />
+    </form>
+  </div>
+  <div v-else class="success">
+    <div class="container">
+      <h1 class="success__title">{{ t("order.success.title") }}</h1>
+      <h2 class="success__message">{{ t("order.success.subtitle") }}</h2>
+    </div>
+  </div>
+</template>
 
 <style scoped>
 .order-heading {

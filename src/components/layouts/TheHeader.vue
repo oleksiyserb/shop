@@ -1,3 +1,36 @@
+<script setup lang="ts">
+import ShopingCart from "../icons/ShopingCart.vue";
+import useAuthStore from "@/stores/auth";
+import useCartStore from "@/stores/cart";
+import { useRoute, useRouter } from "vue-router";
+import { computed } from "@vue/reactivity";
+import { watch, ref, reactive, type InputHTMLAttributes } from "vue";
+import { useI18n } from "vue-i18n";
+
+const authStore = useAuthStore();
+const cartStore = useCartStore();
+const router = useRouter();
+const route = useRoute();
+const { t, locale } = useI18n();
+
+const burgerToggle = ref<InputHTMLAttributes | null>(null);
+const locales = reactive({
+  0: "ua",
+  1: "en",
+});
+
+const countItems = computed(() => cartStore.countItems);
+
+const signOut = () => {
+  authStore.signOut();
+  router.replace("/");
+};
+
+watch(route, () => {
+  if (burgerToggle.value) burgerToggle.value.checked = false;
+});
+</script>
+
 <template>
   <div class="pre--header">
     <header>
@@ -56,39 +89,6 @@
     </header>
   </div>
 </template>
-
-<script setup lang="ts">
-import ShopingCart from "../icons/ShopingCart.vue";
-import { useAuthStore } from "@/stores/auth";
-import { useCartStore } from "@/stores/cart";
-import { useRoute, useRouter } from "vue-router";
-import { computed } from "@vue/reactivity";
-import { watch, ref, reactive, type InputHTMLAttributes } from "vue";
-import { useI18n } from "vue-i18n";
-
-const authStore = useAuthStore();
-const cartStore = useCartStore();
-const router = useRouter();
-const route = useRoute();
-const { t, locale } = useI18n();
-
-const burgerToggle = ref<InputHTMLAttributes | null>(null);
-const locales = reactive({
-  0: "ua",
-  1: "en",
-});
-
-const countItems = computed(() => cartStore.countItems);
-
-const signOut = () => {
-  authStore.signOut();
-  router.replace("/");
-};
-
-watch(route, () => {
-  if (burgerToggle.value) burgerToggle.value.checked = false;
-});
-</script>
 
 <style scoped>
 header {

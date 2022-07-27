@@ -1,3 +1,9 @@
+<script setup lang="ts">
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
+</script>
+
 <template>
   <div class="not-found">
     <h1>{{ t("notFound.ops") }}</h1>
@@ -7,12 +13,6 @@
     }}</base-button>
   </div>
 </template>
-
-<script setup lang="ts">
-import { useI18n } from "vue-i18n";
-
-const { t } = useI18n();
-</script>
 
 <style scoped>
 .not-found {

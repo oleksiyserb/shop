@@ -8,7 +8,7 @@ import {
   orderBy,
 } from "@firebase/firestore";
 import { productCollection, productRef } from "@/firebase";
-import { useHelpers } from "./useHelpers";
+import useHelpers from "./useHelpers";
 import type Product from "@/models/product/ProductModel";
 import type ProductData from "@/models/product/ProductDataModel";
 import type Items from "@/models/cart/ItemsModel";
@@ -16,7 +16,7 @@ import type Types from "@/models/TypesModel";
 
 let errorCode: string;
 
-export const useProduct = () => {
+const useProduct = () => {
   const getProducts = async (
     sortedValues: Types | null = null
   ): Promise<Array<Product> | null | void> => {
@@ -91,3 +91,5 @@ export const useProduct = () => {
     getCurrentProduct,
   };
 };
+
+export default useProduct;

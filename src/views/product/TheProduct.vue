@@ -1,3 +1,35 @@
+<script setup lang="ts">
+import StarIcon from "@/components/icons/StarIcon.vue";
+import { ref } from "vue";
+import useProduct from "@/hooks/useProduct";
+import type ProductData from "@/models/product/ProductDataModel";
+import { useRouter } from "vue-router";
+import useCartStore from "@/stores/cart";
+import { useI18n } from "vue-i18n";
+
+const props = defineProps<{
+  id: string;
+}>();
+const product = ref<ProductData | null>(null);
+const { getCurrentProduct } = useProduct();
+const { replace } = useRouter();
+const cartStore = useCartStore();
+const { t } = useI18n();
+
+(async () => {
+  product.value = await getCurrentProduct(props.id);
+  if (Object.keys(product.value).length === 0) replace({ name: "404" });
+})();
+
+const getRating = (i: number, rating: number): boolean => {
+  return rating - i >= 0;
+};
+
+const addToCart = () => {
+  if (product.value) cartStore.addToCart(props.id, product.value.price);
+};
+</script>
+
 <template>
   <section class="product">
     <div class="container">
@@ -32,38 +64,6 @@
     </div>
   </section>
 </template>
-
-<script setup lang="ts">
-import StarIcon from "@/components/icons/StarIcon.vue";
-import { ref } from "vue";
-import { useProduct } from "@/hooks/useProduct";
-import type ProductData from "@/models/product/ProductDataModel";
-import { useRouter } from "vue-router";
-import { useCartStore } from "@/stores/cart";
-import { useI18n } from "vue-i18n";
-
-const props = defineProps<{
-  id: string;
-}>();
-const product = ref<ProductData | null>(null);
-const { getCurrentProduct } = useProduct();
-const { replace } = useRouter();
-const cartStore = useCartStore();
-const { t } = useI18n();
-
-(async () => {
-  product.value = await getCurrentProduct(props.id);
-  if (Object.keys(product.value).length === 0) replace({ name: "404" });
-})();
-
-const getRating = (i: number, rating: number): boolean => {
-  return rating - i >= 0;
-};
-
-const addToCart = () => {
-  if (product.value) cartStore.addToCart(props.id, product.value.price);
-};
-</script>
 
 <style scoped>
 .product .card {

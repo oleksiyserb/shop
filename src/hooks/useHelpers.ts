@@ -1,6 +1,6 @@
 import type Items from "@/models/cart/ItemsModel";
 
-export const useHelpers = () => {
+const useHelpers = () => {
   const formatedPrice = (price: number) => {
     if (String(price).length > 3) {
       const arrayPrice = String(price).split("").reverse();
@@ -46,3 +46,5 @@ export const useHelpers = () => {
 
   return { getIdsFromStore, formatedPrice, getShort, getDate };
 };
+
+export default useHelpers;

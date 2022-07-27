@@ -1,9 +1,3 @@
-<template>
-  <li :class="selectColor(type)">
-    {{ type }}
-  </li>
-</template>
-
 <script setup lang="ts">
 defineProps<{
   type: string;
@@ -30,6 +24,12 @@ const selectColor = (type: string) => {
   return style;
 };
 </script>
+
+<template>
+  <li :class="selectColor(type)">
+    {{ type }}
+  </li>
+</template>
 
 <style scoped>
 li {

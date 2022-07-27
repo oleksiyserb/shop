@@ -1,3 +1,29 @@
+<script setup lang="ts">
+import OrderItem from "@/components/order/OrderItem.vue";
+import { ref } from "vue";
+import useOrders from "@/hooks/useOrders";
+import type Order from "@/models/order/OrderModel";
+import useAuthStore from "@/stores/auth";
+import { onBeforeMount } from "vue";
+import { useI18n } from "vue-i18n";
+
+interface FullOrder extends Order {
+  id: string;
+}
+
+const orders = ref<Array<FullOrder> | null>(null);
+const isLoading = ref<boolean>(false);
+const { t } = useI18n();
+const { userName, userId, userEmail } = useAuthStore();
+const { getOrdersByUserId } = useOrders();
+
+onBeforeMount(async () => {
+  isLoading.value = true;
+  if (userId) orders.value = await getOrdersByUserId(userId);
+  isLoading.value = false;
+});
+</script>
+
 <template>
   <div class="container">
     <div class="cabinet__profile">
@@ -36,32 +62,6 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import OrderItem from "@/components/order/OrderItem.vue";
-import { ref } from "vue";
-import { useOrders } from "@/hooks/useOrders";
-import type Order from "@/models/order/OrderModel";
-import { useAuthStore } from "@/stores/auth";
-import { onBeforeMount } from "vue";
-import { useI18n } from "vue-i18n";
-
-interface FullOrder extends Order {
-  id: string;
-}
-
-const orders = ref<Array<FullOrder> | null>(null);
-const isLoading = ref<boolean>(false);
-const { t } = useI18n();
-const { userName, userId, userEmail } = useAuthStore();
-const { getOrdersByUserId } = useOrders();
-
-onBeforeMount(async () => {
-  isLoading.value = true;
-  if (userId) orders.value = await getOrdersByUserId(userId);
-  isLoading.value = false;
-});
-</script>
 
 <style scoped>
 .cabinet__profile {

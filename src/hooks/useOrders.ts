@@ -2,7 +2,7 @@ import { orderCollection } from "@/firebase";
 import type Order from "@/models/order/OrderModel";
 import { addDoc, getDocs, query, where } from "@firebase/firestore";
 
-export const useOrders = () => {
+const useOrders = () => {
   const createOrder = async (order: Order) => {
     await addDoc(orderCollection, order);
   };
@@ -20,3 +20,5 @@ export const useOrders = () => {
 
   return { createOrder, getOrdersByUserId };
 };
+
+export default useOrders;

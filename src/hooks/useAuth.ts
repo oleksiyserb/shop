@@ -8,12 +8,12 @@ import {
 } from "@firebase/auth";
 import { auth } from "@/firebase";
 import type User from "@/models/user/UserModel";
-import { checkError } from "./useCheckError";
+import useCheckError from "./useCheckError";
 import { ref } from "@vue/reactivity";
 
 let errorCode: string | null = null;
 
-export const useAuth = () => {
+const useAuth = () => {
   const getCurrentUser = (): Promise<User | null> => {
     return new Promise((resolve, reject) => {
       const unsubscribe = onAuthStateChanged(
@@ -40,7 +40,7 @@ export const useAuth = () => {
     });
 
     if (errorCode) {
-      const error: Error = new Error(checkError(errorCode));
+      const error: Error = new Error(useCheckError(errorCode));
       throw error;
     }
 
@@ -74,7 +74,7 @@ export const useAuth = () => {
       });
 
     if (errorCode) {
-      const error: Error = new Error(checkError(errorCode));
+      const error: Error = new Error(useCheckError(errorCode));
       throw error;
     }
 
@@ -87,3 +87,5 @@ export const useAuth = () => {
 
   return { getCurrentUser, signIn, signUp, logOut };
 };
+
+export default useAuth;

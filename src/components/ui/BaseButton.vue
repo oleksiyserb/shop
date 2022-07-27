@@ -1,12 +1,3 @@
-<template>
-  <router-link class="flat" :to="to" v-if="link">
-    <slot />
-  </router-link>
-  <button class="flat" v-else>
-    <slot />
-  </button>
-</template>
-
 <script setup lang="ts">
 interface Props {
   to?: object | string;
@@ -15,6 +6,15 @@ interface Props {
 
 defineProps<Props>();
 </script>
+
+<template>
+  <router-link class="flat" :to="to" v-if="link">
+    <slot />
+  </router-link>
+  <button class="flat" v-else>
+    <slot />
+  </button>
+</template>
 
 <style scoped>
 .flat {

@@ -1,3 +1,57 @@
+<script setup lang="ts">
+import OrderHeader from "./OrderHeader.vue";
+import OrderBody from "./OrderBody.vue";
+import { useI18n } from "vue-i18n";
+import { useField, type FieldContext } from "vee-validate";
+import useAuth from "@/hooks/useAuth";
+import { onBeforeMount } from "vue";
+
+const { t } = useI18n();
+const { getCurrentUser } = useAuth();
+
+const {
+  value: name,
+  errorMessage: nameError,
+  handleBlur: nameBlur,
+  handleChange: nameChange,
+}: FieldContext<string> = useField("name");
+const {
+  value: surname,
+  errorMessage: surnameError,
+  handleBlur: surnameBlur,
+  handleChange: surnameChange,
+}: FieldContext<string> = useField("surname");
+const {
+  value: lastName,
+  errorMessage: lastNameError,
+  handleBlur: lastNameBlur,
+  handleChange: lastNameChange,
+}: FieldContext<string> = useField("lastName");
+const {
+  value: phoneNumber,
+  errorMessage: phoneNumberError,
+  handleBlur: phoneNumberBlur,
+  handleChange: phoneNumberChange,
+}: FieldContext<string> = useField("phoneNumber");
+const {
+  value: email,
+  errorMessage: emailError,
+  handleBlur: emailBlur,
+  handleChange: emailChange,
+}: FieldContext<string> = useField("email");
+
+onBeforeMount(async () => {
+  const user = await getCurrentUser();
+  if (user && user.uid && user.email && user.displayName) {
+    const array = user.displayName.split(" ");
+
+    name.value = array[0];
+    surname.value = array[1];
+    email.value = user.email;
+  }
+});
+</script>
+
 <template>
   <section class="order-contacts">
     <order-header rank="1" :title="t('order.contacts.title')" />
@@ -62,60 +116,6 @@
     </order-body>
   </section>
 </template>
-
-<script setup lang="ts">
-import OrderHeader from "./OrderHeader.vue";
-import OrderBody from "./OrderBody.vue";
-import { useI18n } from "vue-i18n";
-import { useField, type FieldContext } from "vee-validate";
-import { useAuth } from "@/hooks/useAuth";
-import { onBeforeMount } from "vue";
-
-const { t } = useI18n();
-const { getCurrentUser } = useAuth();
-
-const {
-  value: name,
-  errorMessage: nameError,
-  handleBlur: nameBlur,
-  handleChange: nameChange,
-}: FieldContext<string> = useField("name");
-const {
-  value: surname,
-  errorMessage: surnameError,
-  handleBlur: surnameBlur,
-  handleChange: surnameChange,
-}: FieldContext<string> = useField("surname");
-const {
-  value: lastName,
-  errorMessage: lastNameError,
-  handleBlur: lastNameBlur,
-  handleChange: lastNameChange,
-}: FieldContext<string> = useField("lastName");
-const {
-  value: phoneNumber,
-  errorMessage: phoneNumberError,
-  handleBlur: phoneNumberBlur,
-  handleChange: phoneNumberChange,
-}: FieldContext<string> = useField("phoneNumber");
-const {
-  value: email,
-  errorMessage: emailError,
-  handleBlur: emailBlur,
-  handleChange: emailChange,
-}: FieldContext<string> = useField("email");
-
-onBeforeMount(async () => {
-  const user = await getCurrentUser();
-  if (user && user.uid && user.email && user.displayName) {
-    const array = user.displayName.split(" ");
-
-    name.value = array[0];
-    surname.value = array[1];
-    email.value = user.email;
-  }
-});
-</script>
 
 <style scoped>
 .order-contacts__single {

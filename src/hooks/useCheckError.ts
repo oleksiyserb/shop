@@ -1,4 +1,4 @@
-export const checkError = (error: string) => {
+const useCheckError = (error: string) => {
   let errorMessage;
 
   switch (error) {
@@ -27,3 +27,5 @@ export const checkError = (error: string) => {
 
   return errorMessage;
 };
+
+export default useCheckError;

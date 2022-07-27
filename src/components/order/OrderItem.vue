@@ -1,3 +1,26 @@
+<script setup lang="ts">
+import { computed } from "@vue/reactivity";
+import useHelpers from "@/hooks/useHelpers";
+import { useI18n } from "vue-i18n";
+
+const props = defineProps<{
+  picture: string;
+  title: string;
+  price: number;
+  count: number | undefined;
+}>();
+
+const { formatedPrice } = useHelpers();
+const { t } = useI18n();
+
+const normalizedPrice = computed(() => formatedPrice(props.price));
+
+const totalPrice = computed(() => {
+  const price = (props.count || 0) * props.price;
+  return formatedPrice(price);
+});
+</script>
+
 <template>
   <div class="product">
     <picture><img :src="picture" alt="labrador" /></picture>
@@ -19,29 +42,6 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import { computed } from "@vue/reactivity";
-import { useHelpers } from "@/hooks/useHelpers";
-import { useI18n } from "vue-i18n";
-
-const props = defineProps<{
-  picture: string;
-  title: string;
-  price: number;
-  count: number | undefined;
-}>();
-
-const { formatedPrice } = useHelpers();
-const { t } = useI18n();
-
-const normalizedPrice = computed(() => formatedPrice(props.price));
-
-const totalPrice = computed(() => {
-  const price = (props.count || 0) * props.price;
-  return formatedPrice(price);
-});
-</script>
 
 <style scoped>
 .product {

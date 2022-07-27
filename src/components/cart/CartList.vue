@@ -1,33 +1,8 @@
-<template>
-  <div class="cart__items">
-    <template v-if="!isLoading && countItems !== 0">
-      <cart-item
-        v-for="product in products"
-        :key="product.id"
-        :id="product.id"
-        :title="product.title"
-        :description="product.description"
-        :price="product.price"
-        :picture="product.picture"
-        :count-item="getCountItem(product.id)"
-        @delete="handleDelete"
-        @increment="increment"
-        @decrement="decrement"
-      />
-    </template>
-    <h1 class="empty-cart" v-else-if="isError || countItems === 0">
-      {{ t("cart.empty") }}
-      <router-link :to="{ name: 'main' }">{{ t("cart.goBack") }}</router-link>
-    </h1>
-    <base-spinner v-else width="200px" height="200px" fill="#e15b64" />
-  </div>
-</template>
-
 <script setup lang="ts">
 import CartItem from "./CartItem.vue";
 import type Product from "@/models/product/ProductModel";
-import { useProduct } from "@/hooks/useProduct";
-import { useCartStore } from "@/stores/cart";
+import useProduct from "@/hooks/useProduct";
+import useCartStore from "@/stores/cart";
 import { onBeforeMount, ref } from "vue";
 import { useI18n } from "vue-i18n";
 
@@ -95,6 +70,31 @@ const handleDelete = (id: string) => {
   localStorage.setItem("cartItems", JSON.stringify(products.value));
 };
 </script>
+
+<template>
+  <div class="cart__items">
+    <template v-if="!isLoading && countItems !== 0">
+      <cart-item
+        v-for="product in products"
+        :key="product.id"
+        :id="product.id"
+        :title="product.title"
+        :description="product.description"
+        :price="product.price"
+        :picture="product.picture"
+        :count-item="getCountItem(product.id)"
+        @delete="handleDelete"
+        @increment="increment"
+        @decrement="decrement"
+      />
+    </template>
+    <h1 class="empty-cart" v-else-if="isError || countItems === 0">
+      {{ t("cart.empty") }}
+      <router-link :to="{ name: 'main' }">{{ t("cart.goBack") }}</router-link>
+    </h1>
+    <base-spinner v-else width="200px" height="200px" fill="#e15b64" />
+  </div>
+</template>
 
 <style scoped>
 .cart__items {

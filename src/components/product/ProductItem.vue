@@ -1,3 +1,33 @@
+<script setup lang="ts">
+import useHelpers from "@/hooks/useHelpers";
+import useCartStore from "@/stores/cart";
+import StarIcon from "../icons/StarIcon.vue";
+import { useI18n } from "vue-i18n";
+interface Product {
+  id: string;
+  title: string;
+  rating: number;
+  price: number;
+  picture: string;
+  count: number;
+  type: string;
+}
+
+const { t } = useI18n();
+const props = defineProps<Product>();
+const cartStore = useCartStore();
+
+const { formatedPrice, getShort } = useHelpers();
+
+const addToCart = () => {
+  cartStore.addToCart(props.id, props.price);
+};
+
+const getRating = (i: number, rating: number): boolean => {
+  return rating - i >= 0;
+};
+</script>
+
 <template>
   <div class="product__item">
     <base-card>
@@ -30,36 +60,6 @@
     </base-card>
   </div>
 </template>
-
-<script setup lang="ts">
-import { useHelpers } from "@/hooks/useHelpers";
-import { useCartStore } from "@/stores/cart";
-import StarIcon from "../icons/StarIcon.vue";
-import { useI18n } from "vue-i18n";
-interface Product {
-  id: string;
-  title: string;
-  rating: number;
-  price: number;
-  picture: string;
-  count: number;
-  type: string;
-}
-
-const { t } = useI18n();
-const props = defineProps<Product>();
-const cartStore = useCartStore();
-
-const { formatedPrice, getShort } = useHelpers();
-
-const addToCart = () => {
-  cartStore.addToCart(props.id, props.price);
-};
-
-const getRating = (i: number, rating: number): boolean => {
-  return rating - i >= 0;
-};
-</script>
 
 <style scoped>
 .product__item {

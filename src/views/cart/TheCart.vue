@@ -1,27 +1,8 @@
-<template>
-  <section class="cart">
-    <div class="container">
-      <base-card>
-        <header class="cart__header">
-          <h1>{{ t("cart.cartItems", { count: countItems }) }}</h1>
-        </header>
-        <cart-list :countItems="countItems" />
-        <div class="cart__actions">
-          <base-button :to="{ name: 'ordering' }" v-if="countItems > 0" link>{{
-            t("action.ordering")
-          }}</base-button>
-          <span v-html="t('cart.totalPrice', { totalPrice })"></span>
-        </div>
-      </base-card>
-    </div>
-  </section>
-</template>
-
 <script setup lang="ts">
 import CartList from "../../components/cart/CartList.vue";
 import { ref, computed } from "@vue/reactivity";
-import { useHelpers } from "@/hooks/useHelpers";
-import { useCartStore } from "@/stores/cart";
+import useHelpers from "@/hooks/useHelpers";
+import useCartStore from "@/stores/cart";
 import { useI18n } from "vue-i18n";
 
 const { formatedPrice } = useHelpers();
@@ -42,6 +23,25 @@ const totalPrice = computed(() => {
 // All Count Items
 const countItems = computed(() => cartStore.countItems);
 </script>
+
+<template>
+  <section class="cart">
+    <div class="container">
+      <base-card>
+        <header class="cart__header">
+          <h1>{{ t("cart.cartItems", { count: countItems }) }}</h1>
+        </header>
+        <cart-list :countItems="countItems" />
+        <div class="cart__actions">
+          <base-button :to="{ name: 'ordering' }" v-if="countItems > 0" link>{{
+            t("action.ordering")
+          }}</base-button>
+          <span v-html="t('cart.totalPrice', { totalPrice })"></span>
+        </div>
+      </base-card>
+    </div>
+  </section>
+</template>
 
 <style scoped>
 .cart * {

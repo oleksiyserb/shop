@@ -1,17 +1,3 @@
-<template>
-  <div class="container">
-    <picture class="hero">
-      <img src="../../assets/img/hero.jpg" alt="hero" />
-    </picture>
-    <div class="product">
-      <product-filter @change-type="setTypes" />
-      <section class="product__main">
-        <product-list :types="types" />
-      </section>
-    </div>
-  </div>
-</template>
-
 <script setup lang="ts">
 import ProductFilter from "../../components/product/ProductFilter.vue";
 import ProductList from "../../components/product/ProductList.vue";
@@ -28,6 +14,20 @@ const setTypes = (updatedTypes: Types) => {
   types.value = updatedTypes;
 };
 </script>
+
+<template>
+  <div class="container">
+    <picture class="hero">
+      <img src="../../assets/img/hero.jpg" alt="hero" />
+    </picture>
+    <div class="product">
+      <product-filter @change-type="setTypes" />
+      <section class="product__main">
+        <product-list :types="types" />
+      </section>
+    </div>
+  </div>
+</template>
 
 <style scoped>
 .hero {

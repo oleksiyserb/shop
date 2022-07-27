@@ -1,7 +1,7 @@
 import type Cart from "@/models/cart/CartModel";
 import { defineStore } from "pinia";
 
-export const useCartStore = defineStore({
+const useCartStore = defineStore({
   id: "cart",
   state: () =>
     ({
@@ -67,3 +67,5 @@ export const useCartStore = defineStore({
     },
   },
 });
+
+export default useCartStore;

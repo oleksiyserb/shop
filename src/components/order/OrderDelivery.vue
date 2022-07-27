@@ -1,16 +1,3 @@
-<template>
-  <section class="order-delivery">
-    <order-header rank="2" :title="t('order.delivery.title')" />
-    <order-body>
-      <div class="form-control order-delivery__select">
-        <h2>{{ t("order.delivery.state") }}</h2>
-        <base-select v-model:value="state" :items="states" />
-        <p v-if="stateError">{{ stateError }}</p>
-      </div>
-    </order-body>
-  </section>
-</template>
-
 <script setup lang="ts">
 import OrderBody from "./OrderBody.vue";
 import OrderHeader from "./OrderHeader.vue";
@@ -44,6 +31,19 @@ onBeforeMount(async () => {
   });
 });
 </script>
+
+<template>
+  <section class="order-delivery">
+    <order-header rank="2" :title="t('order.delivery.title')" />
+    <order-body>
+      <div class="form-control order-delivery__select">
+        <h2>{{ t("order.delivery.state") }}</h2>
+        <base-select v-model:value="state" :items="states" />
+        <p v-if="stateError">{{ stateError }}</p>
+      </div>
+    </order-body>
+  </section>
+</template>
 
 <style scoped>
 .order-delivery__select {

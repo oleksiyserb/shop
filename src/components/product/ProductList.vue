@@ -1,28 +1,6 @@
-<template>
-  <div class="wrapper" v-if="!errorMessage">
-    <template v-if="!isLoading">
-      <product-item
-        v-for="product in products"
-        :key="product.id"
-        :id="product.id"
-        :title="product.title"
-        :rating="product.rating"
-        :price="product.price"
-        :picture="product.picture"
-        :count="product.count"
-        :type="product.type"
-      />
-    </template>
-    <template v-else>
-      <product-item-skeleton v-for="i in 6" :key="i" />
-    </template>
-  </div>
-  <strong v-else>{{ errorMessage }}</strong>
-</template>
-
 <script setup lang="ts">
 import ProductItem from "./ProductItem.vue";
-import { useProduct } from "@/hooks/useProduct";
+import useProduct from "@/hooks/useProduct";
 import type Types from "@/models/TypesModel";
 import { onBeforeMount, ref, toRefs, watch } from "vue";
 import type Product from "@/models/product/ProductModel";
@@ -53,3 +31,25 @@ watch(types, async (values) => {
   }
 });
 </script>
+
+<template>
+  <div class="wrapper" v-if="!errorMessage">
+    <template v-if="!isLoading">
+      <product-item
+        v-for="product in products"
+        :key="product.id"
+        :id="product.id"
+        :title="product.title"
+        :rating="product.rating"
+        :price="product.price"
+        :picture="product.picture"
+        :count="product.count"
+        :type="product.type"
+      />
+    </template>
+    <template v-else>
+      <product-item-skeleton v-for="i in 6" :key="i" />
+    </template>
+  </div>
+  <strong v-else>{{ errorMessage }}</strong>
+</template>

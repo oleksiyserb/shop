@@ -1,3 +1,33 @@
+<script setup lang="ts">
+import { ref } from "@vue/reactivity";
+import type Types from "@/models/TypesModel";
+import { useI18n } from "vue-i18n";
+
+const emit = defineEmits<{
+  (e: "change-type", updatedTypes: Types): void;
+}>();
+
+const types = ref<Types>({
+  canvas: true,
+  sport: true,
+  waterRepellent: true,
+});
+
+const { t } = useI18n();
+
+const typeChanged = (e: any) => {
+  const inputId = e.target.id;
+  const isActive = e.target.checked;
+
+  const updatedTypes = {
+    ...types.value,
+    [inputId]: isActive,
+  };
+  types.value = updatedTypes;
+  emit("change-type", updatedTypes);
+};
+</script>
+
 <template>
   <aside class="product__filters">
     <base-card>
@@ -38,36 +68,6 @@
     </base-card>
   </aside>
 </template>
-
-<script setup lang="ts">
-import { ref } from "@vue/reactivity";
-import type Types from "@/models/TypesModel";
-import { useI18n } from "vue-i18n";
-
-const emit = defineEmits<{
-  (e: "change-type", updatedTypes: Types): void;
-}>();
-
-const types = ref<Types>({
-  canvas: true,
-  sport: true,
-  waterRepellent: true,
-});
-
-const { t } = useI18n();
-
-const typeChanged = (e: any) => {
-  const inputId = e.target.id;
-  const isActive = e.target.checked;
-
-  const updatedTypes = {
-    ...types.value,
-    [inputId]: isActive,
-  };
-  types.value = updatedTypes;
-  emit("change-type", updatedTypes);
-};
-</script>
 
 <style scoped>
 header {

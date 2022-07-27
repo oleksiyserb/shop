@@ -1,22 +1,10 @@
-<template>
-  <the-header />
-  <main>
-    <router-view v-slot="{ Component }">
-      <transition name="fade" mode="out-in">
-        <component :is="Component"></component>
-      </transition>
-    </router-view>
-  </main>
-  <the-footer />
-</template>
-
 <script setup lang="ts">
 import TheHeader from "./components/layouts/TheHeader.vue";
 import TheFooter from "./components/layouts/TheFooter.vue";
-import { useAuth } from "./hooks/useAuth";
+import useAuth from "./hooks/useAuth";
 import { onBeforeMount } from "vue";
-import { useAuthStore } from "./stores/auth";
-import { useCartStore } from "./stores/cart";
+import useAuthStore from "./stores/auth";
+import useCartStore from "./stores/cart";
 
 const { getCurrentUser } = useAuth();
 const authStore = useAuthStore();
@@ -32,6 +20,18 @@ onBeforeMount(async () => {
   }
 });
 </script>
+
+<template>
+  <the-header />
+  <main>
+    <router-view v-slot="{ Component }">
+      <transition name="fade" mode="out-in">
+        <component :is="Component"></component>
+      </transition>
+    </router-view>
+  </main>
+  <the-footer />
+</template>
 
 <style>
 @import "@/assets/css/reset.css";

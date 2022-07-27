@@ -1,3 +1,9 @@
+<script setup lang="ts">
+defineProps<{
+  selected: boolean;
+}>();
+</script>
+
 <template>
   <svg
     v-if="selected"
@@ -29,9 +35,3 @@
     />
   </svg>
 </template>
-
-<script setup lang="ts">
-defineProps<{
-  selected: boolean;
-}>();
-</script>

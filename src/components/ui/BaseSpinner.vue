@@ -1,3 +1,11 @@
+<script setup lang="ts">
+defineProps<{
+  width: string;
+  height: string;
+  fill: string;
+}>();
+</script>
+
 <template>
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -22,14 +30,6 @@
     </path>
   </svg>
 </template>
-
-<script setup lang="ts">
-defineProps<{
-  width: string;
-  height: string;
-  fill: string;
-}>();
-</script>
 
 <style scoped>
 svg {

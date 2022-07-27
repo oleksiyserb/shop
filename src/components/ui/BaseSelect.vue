@@ -1,30 +1,3 @@
-<template>
-  <div class="select">
-    <div
-      class="select__default"
-      :class="{ opened: isOpened }"
-      @click="toggleSelect"
-    >
-      <span>{{ selectedOption }}</span>
-    </div>
-    <div class="select__wrapper" v-show="isOpened">
-      <!-- TODO: Filter and cheked if this component has corresponding prop -->
-      <div class="select__option" v-for="(item, key) in items" :key="key">
-        <input
-          class="select__input"
-          type="radio"
-          :id="key"
-          name="radio"
-          @click="toggleOption(key, item)"
-        />
-        <label class="select__label" :for="key">
-          {{ item }}
-        </label>
-      </div>
-    </div>
-  </div>
-</template>
-
 <script setup lang="ts">
 import { watch, computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
@@ -63,6 +36,33 @@ watch(selected, () => {
   isOpened.value = false;
 });
 </script>
+
+<template>
+  <div class="select">
+    <div
+      class="select__default"
+      :class="{ opened: isOpened }"
+      @click="toggleSelect"
+    >
+      <span>{{ selectedOption }}</span>
+    </div>
+    <div class="select__wrapper" v-show="isOpened">
+      <!-- TODO: Filter and cheked if this component has corresponding prop -->
+      <div class="select__option" v-for="(item, key) in items" :key="key">
+        <input
+          class="select__input"
+          type="radio"
+          :id="key"
+          name="radio"
+          @click="toggleOption(key, item)"
+        />
+        <label class="select__label" :for="key">
+          {{ item }}
+        </label>
+      </div>
+    </div>
+  </div>
+</template>
 
 <style scoped>
 .select {

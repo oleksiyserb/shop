@@ -1,3 +1,13 @@
+<script setup lang="ts">
+defineProps<{
+  title?: string;
+}>();
+
+const emit = defineEmits<{
+  (e: "close"): void;
+}>();
+</script>
+
 <template>
   <teleport to="body">
     <div class="mask" @click="emit('close')"></div>
@@ -18,16 +28,6 @@
     </div>
   </teleport>
 </template>
-
-<script setup lang="ts">
-defineProps<{
-  title?: string;
-}>();
-
-const emit = defineEmits<{
-  (e: "close"): void;
-}>();
-</script>
 
 <style scoped>
 .mask {

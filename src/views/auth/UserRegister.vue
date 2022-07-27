@@ -1,3 +1,50 @@
+<script setup lang="ts">
+import { ref } from "@vue/reactivity";
+import useAuthForm from "../../hooks/useAuthForm";
+import type Auth from "@/models/AuthModel";
+import { useRouter } from "vue-router";
+import useAuthStore from "@/stores/auth";
+import { useI18n } from "vue-i18n";
+
+const { replace } = useRouter();
+const { t } = useI18n();
+
+const isLoading = ref<boolean>(false);
+const authStore = useAuthStore();
+const errorMessage = ref<string | null>(null);
+
+const {
+  onSubmit,
+  getNameField,
+  getSurnameField,
+  getEmailField,
+  getPassswordField,
+} = useAuthForm(async (values: Auth): Promise<void> => {
+  try {
+    isLoading.value = true;
+    await authStore.signUp(values);
+    isLoading.value = false;
+
+    replace({ name: "cabinet" });
+  } catch (err) {
+    if (err instanceof Error) {
+      isLoading.value = false;
+      errorMessage.value = err.message;
+    }
+  }
+}, "signUp");
+
+const { email, emailBlur, emailChange, emailError } = getEmailField();
+const { password, passwordBlur, passwordChange, passwordError } =
+  getPassswordField();
+const { name, nameBlur, nameChange, nameError } = getNameField();
+const { surname, surnameBlur, surnameChange, surnameError } = getSurnameField();
+
+const closeModal = () => {
+  errorMessage.value = null;
+};
+</script>
+
 <template>
   <div>
     <base-modal @close="closeModal" v-if="errorMessage" title="Error Message!">
@@ -82,50 +129,3 @@
     </section>
   </div>
 </template>
-
-<script setup lang="ts">
-import { ref } from "@vue/reactivity";
-import { useAuthForm } from "../../hooks/useAuthForm";
-import type Auth from "@/models/AuthModel";
-import { useRouter } from "vue-router";
-import { useAuthStore } from "@/stores/auth";
-import { useI18n } from "vue-i18n";
-
-const { replace } = useRouter();
-const { t } = useI18n();
-
-const isLoading = ref<boolean>(false);
-const authStore = useAuthStore();
-const errorMessage = ref<string | null>(null);
-
-const {
-  onSubmit,
-  getNameField,
-  getSurnameField,
-  getEmailField,
-  getPassswordField,
-} = useAuthForm(async (values: Auth): Promise<void> => {
-  try {
-    isLoading.value = true;
-    await authStore.signUp(values);
-    isLoading.value = false;
-
-    replace({ name: "cabinet" });
-  } catch (err) {
-    if (err instanceof Error) {
-      isLoading.value = false;
-      errorMessage.value = err.message;
-    }
-  }
-}, "signUp");
-
-const { email, emailBlur, emailChange, emailError } = getEmailField();
-const { password, passwordBlur, passwordChange, passwordError } =
-  getPassswordField();
-const { name, nameBlur, nameChange, nameError } = getNameField();
-const { surname, surnameBlur, surnameChange, surnameError } = getSurnameField();
-
-const closeModal = () => {
-  errorMessage.value = null;
-};
-</script>

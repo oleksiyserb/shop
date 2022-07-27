@@ -1,10 +1,10 @@
-import { useAuth } from "@/hooks/useAuth";
+import useAuth from "@/hooks/useAuth";
 import type Auth from "@/models/AuthModel";
 import type CurrentUser from "@/models/user/CurrentUserModel";
 import type User from "@/models/user/UserModel";
 import { defineStore } from "pinia";
 
-export const useAuthStore = defineStore({
+const useAuthStore = defineStore({
   id: "auth",
   state: () =>
     ({
@@ -72,3 +72,5 @@ export const useAuthStore = defineStore({
     },
   },
 });
+
+export default useAuthStore;

@@ -1,3 +1,15 @@
+<script setup lang="ts">
+import { useI18n } from "vue-i18n";
+import useCartStore from "@/stores/cart";
+
+defineProps<{
+  totalPrice: string;
+}>();
+
+const { t } = useI18n();
+const cart = useCartStore();
+</script>
+
 <template>
   <aside class="order-info">
     <base-card>
@@ -16,18 +28,6 @@
     </base-card>
   </aside>
 </template>
-
-<script setup lang="ts">
-import { useI18n } from "vue-i18n";
-import { useCartStore } from "@/stores/cart";
-
-defineProps<{
-  totalPrice: string;
-}>();
-
-const { t } = useI18n();
-const cart = useCartStore();
-</script>
 
 <style scoped>
 .order-info__header {

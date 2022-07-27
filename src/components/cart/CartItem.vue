@@ -1,28 +1,5 @@
-<template>
-  <div class="cart__item">
-    <button @click="emit('delete', id)"><trash-icon /></button>
-    <picture>
-      <img :src="picture" alt="collar" />
-    </picture>
-    <div class="cart__item-content">
-      <h1>{{ title }}</h1>
-      <p>
-        {{ description }}
-      </p>
-      <div class="cart__item-details">
-        <div class="cart__item-count">
-          <button @click="emit('decrement', id)">-</button>
-          <span>{{ countItem }}</span>
-          <button @click="emit('increment', id)">+</button>
-        </div>
-        <strong>{{ fullPrice }}</strong>
-      </div>
-    </div>
-  </div>
-</template>
-
 <script setup lang="ts">
-import { useHelpers } from "@/hooks/useHelpers";
+import useHelpers from "@/hooks/useHelpers";
 import { computed } from "@vue/reactivity";
 import TrashIcon from "../icons/TrashIcon.vue";
 
@@ -49,6 +26,29 @@ const fullPrice = computed(() => {
   return formatedPrice(price);
 });
 </script>
+
+<template>
+  <div class="cart__item">
+    <button @click="emit('delete', id)"><trash-icon /></button>
+    <picture>
+      <img :src="picture" alt="collar" />
+    </picture>
+    <div class="cart__item-content">
+      <h1>{{ title }}</h1>
+      <p>
+        {{ description }}
+      </p>
+      <div class="cart__item-details">
+        <div class="cart__item-count">
+          <button @click="emit('decrement', id)">-</button>
+          <span>{{ countItem }}</span>
+          <button @click="emit('increment', id)">+</button>
+        </div>
+        <strong>{{ fullPrice }}</strong>
+      </div>
+    </div>
+  </div>
+</template>
 
 <style scoped>
 .cart__item {

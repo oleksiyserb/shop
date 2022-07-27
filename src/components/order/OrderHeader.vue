@@ -1,16 +1,16 @@
-<template>
-  <header class="order-header">
-    <span>{{ rank }}</span>
-    <p>{{ title }}</p>
-  </header>
-</template>
-
 <script setup lang="ts">
 defineProps<{
   title: string;
   rank: string;
 }>();
 </script>
+
+<template>
+  <header class="order-header">
+    <span>{{ rank }}</span>
+    <p>{{ title }}</p>
+  </header>
+</template>
 
 <style scoped>
 .order-header {

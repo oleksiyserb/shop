@@ -6,7 +6,7 @@ import {
 } from "vee-validate";
 import { object, string } from "yup";
 
-export const useAuthForm = (
+const useAuthForm = (
   submitCallback: SubmissionHandler<any, void>,
   method: string
 ) => {
@@ -84,3 +84,5 @@ export const useAuthForm = (
     getPassswordField,
   };
 };
+
+export default useAuthForm;
